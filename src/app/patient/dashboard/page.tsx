@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import {
   Card,
   CardContent,
@@ -8,9 +8,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { ActivityLogger } from '@/components/patient/activity-logger';
-import { mockAppointments } from '@/lib/mock-data';
-import { Calendar, Clock, Video } from 'lucide-react';
+import { PatientDashboardSkeleton } from '@/components/skeletons';
+
+const ActivityLogger = dynamic(() => import('@/components/patient/activity-logger').then(mod => mod.ActivityLogger), {
+    ssr: false,
+    loading: () => <PatientDashboardSkeleton />
+});
+
+const UpcomingAppointments = dynamic(() => import('@/components/patient/upcoming-appointments').then(mod => mod.UpcomingAppointments), {
+    ssr: false,
+    loading: () => <PatientDashboardSkeleton />
+});
 
 export default function PatientDashboard() {
   return (
@@ -25,47 +33,17 @@ export default function PatientDashboard() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <ActivityLogger />
+            <Suspense fallback={<PatientDashboardSkeleton />}>
+                <ActivityLogger />
+            </Suspense>
           </CardContent>
         </Card>
       </div>
 
       <div className="grid auto-rows-max items-start gap-4 md:gap-8">
-        <Card>
-          <CardHeader>
-            <CardTitle>Upcoming Appointments</CardTitle>
-          </CardHeader>
-          <CardContent className="grid gap-4">
-            {mockAppointments.map((appointment) => (
-              <div key={appointment.id} className="flex items-center gap-4">
-                <Avatar className="hidden h-12 w-12 sm:flex">
-                  <AvatarImage
-                    src="https://i.pravatar.cc/150?u=dr.smith"
-                    alt="Dr. Smith"
-                  />
-                  <AvatarFallback>DS</AvatarFallback>
-                </Avatar>
-                <div className="grid gap-1">
-                  <p className="text-sm font-medium leading-none">
-                    Consultation with Dr. Smith
-                  </p>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Calendar className="h-4 w-4" /> {appointment.date}
-                  </div>
-                  <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                    <Clock className="h-4 w-4" /> {appointment.time}
-                  </div>
-                </div>
-                <Button variant="outline" size="icon" className="ml-auto">
-                  <Video className="h-4 w-4" />
-                </Button>
-              </div>
-            ))}
-             <Button asChild variant="outline" className="w-full mt-2">
-                <Link href="/patient/appointments">View All Appointments</Link>
-            </Button>
-          </CardContent>
-        </Card>
+        <Suspense fallback={<PatientDashboardSkeleton />}>
+            <UpcomingAppointments />
+        </Suspense>
       </div>
     </div>
   );

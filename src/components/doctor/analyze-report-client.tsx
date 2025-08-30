@@ -12,15 +12,18 @@ import {
   X,
 } from 'lucide-react';
 
-import { handleAnalyzeReport } from '@/app/actions';
+import { handleAnalyzeReport, getAnalysisResult } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Skeleton } from '../ui/skeleton';
+import type { AnalyzeMedicalReportOutput } from '@/ai/flows/analyze-medical-report';
 
 const initialState = {
   success: false,
   message: '',
+  analysisId: undefined,
 };
 
 function SubmitButton() {
@@ -29,7 +32,7 @@ function SubmitButton() {
     <Button type="submit" disabled={pending} className="w-full bg-accent hover:bg-accent/90">
       {pending ? (
         <>
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Analyzing...
+          <Loader2 className="mr-2 h-4 w-4 animate-spin" /> Starting Analysis...
         </>
       ) : (
         'Analyze Report'
@@ -38,34 +41,98 @@ function SubmitButton() {
   );
 }
 
+function AnalysisResultSkeleton() {
+    return (
+        <div className="space-y-6">
+            <div>
+                <h3 className="flex items-center text-lg font-semibold mb-2">
+                    <FileText className="mr-2 h-5 w-5 text-primary" /> Summary
+                </h3>
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-4/5" />
+                </div>
+            </div>
+            <div>
+                <h3 className="flex items-center text-lg font-semibold mb-2">
+                    <Lightbulb className="mr-2 h-5 w-5 text-primary" /> Potential Issues
+                </h3>
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-full" />
+                    <Skeleton className="h-4 w-2/3" />
+                </div>
+            </div>
+            <div>
+                <h3 className="flex items-center text-lg font-semibold mb-2">
+                    <ListOrdered className="mr-2 h-5 w-5 text-primary" /> Next Steps
+                </h3>
+                <div className="space-y-2">
+                    <Skeleton className="h-4 w-full" />
+                     <Skeleton className="h-4 w-1/2" />
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
 export function AnalyzeReportClient() {
   const [state, formAction] = useFormState(handleAnalyzeReport, initialState);
+  const [analysisResult, setAnalysisResult] = useState<AnalyzeMedicalReportOutput | null>(null);
+  const [isPolling, setIsPolling] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [dataUri, setDataUri] = useState<string>('');
   const formRef = useRef<HTMLFormElement>(null);
+  const pollIntervalRef = useRef<NodeJS.Timeout>();
+
+
+  useEffect(() => {
+    if (state.success && state.analysisId) {
+      setIsPolling(true);
+      setAnalysisResult(null); // Clear previous results
+      handleRemoveFile(); // Clear file input
+      
+      pollIntervalRef.current = setInterval(async () => {
+        try {
+          const result = await getAnalysisResult(state.analysisId!);
+          if (result) {
+            setAnalysisResult(result);
+            setIsPolling(false);
+            clearInterval(pollIntervalRef.current);
+          }
+        } catch (error) {
+          console.error("Polling failed:", error);
+          setIsPolling(false);
+          clearInterval(pollIntervalRef.current);
+        }
+      }, 2000); // Poll every 2 seconds
+    }
+
+    return () => {
+      if (pollIntervalRef.current) {
+        clearInterval(pollIntervalRef.current);
+      }
+    };
+  }, [state.success, state.analysisId]);
+
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
 
-      // Create a preview
       if (selectedFile.type.startsWith('image/')) {
         const reader = new FileReader();
-        reader.onloadend = () => {
-          setPreview(reader.result as string);
-        };
+        reader.onloadend = () => setPreview(reader.result as string);
         reader.readAsDataURL(selectedFile);
       } else {
         setPreview(null);
       }
 
-      // Create data URI for submission
       const readerForDataUri = new FileReader();
-      readerForDataUri.onload = (event) => {
-        setDataUri(event.target?.result as string);
-      };
+      readerForDataUri.onload = (event) => setDataUri(event.target?.result as string);
       readerForDataUri.readAsDataURL(selectedFile);
     }
   };
@@ -74,16 +141,11 @@ export function AnalyzeReportClient() {
     setFile(null);
     setPreview(null);
     setDataUri('');
-    formRef.current?.reset();
-    // Also reset the form state by re-initializing it somehow
-    // For now, we rely on the user submitting again to clear the old state.
+    if (formRef.current) {
+      formRef.current.reset();
+    }
   };
 
-  useEffect(() => {
-    if (state.success) {
-      handleRemoveFile(); // Clear file input after successful analysis
-    }
-  }, [state.success]);
 
   return (
     <div className="grid gap-8 md:grid-cols-2 max-w-6xl mx-auto">
@@ -94,6 +156,7 @@ export function AnalyzeReportClient() {
         <CardContent className="flex-grow flex flex-col">
           <form action={formAction} ref={formRef} className="flex-grow flex flex-col">
             <input type="hidden" name="reportDataUri" value={dataUri} />
+            <input type="hidden" name="reportName" value={file?.name || ''} />
             <div className="flex-grow flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-lg mb-4">
               <UploadCloud className="w-12 h-12 text-muted-foreground" />
               <p className="mt-2 text-sm text-muted-foreground">
@@ -114,6 +177,7 @@ export function AnalyzeReportClient() {
                 className="hidden"
                 onChange={handleFileChange}
                 accept=".pdf,.png,.jpg,.jpeg"
+                disabled={isPolling}
               />
             </div>
 
@@ -144,6 +208,7 @@ export function AnalyzeReportClient() {
                       variant="ghost"
                       size="icon"
                       onClick={handleRemoveFile}
+                      disabled={isPolling}
                     >
                       <X className="h-4 w-4" />
                     </Button>
@@ -153,6 +218,13 @@ export function AnalyzeReportClient() {
             )}
 
             <SubmitButton />
+
+             {state.success && state.message && !isPolling && !analysisResult && (
+                <Alert className="mt-4 bg-accent/50 border-accent">
+                    <AlertTitle>Analysis Started</AlertTitle>
+                    <AlertDescription>{state.message}</AlertDescription>
+                </Alert>
+            )}
 
             {!state.success && state.message && (
               <Alert variant="destructive" className="mt-4">
@@ -167,14 +239,16 @@ export function AnalyzeReportClient() {
       <Card>
         <CardHeader className="flex flex-row items-center justify-between">
           <CardTitle>Analysis Results</CardTitle>
-          {state.success && state.analysis && (
+          {analysisResult && (
             <Button variant="outline" size="sm">
               <Share2 className="mr-2 h-4 w-4" /> Export
             </Button>
           )}
         </CardHeader>
         <CardContent>
-          {!state.analysis && (
+          {isPolling && <AnalysisResultSkeleton />}
+
+          {!isPolling && !analysisResult && (
             <div className="flex flex-col items-center justify-center h-96 text-center">
               <FileText className="h-16 w-16 text-muted-foreground" />
               <p className="mt-4 text-lg font-medium">
@@ -185,14 +259,15 @@ export function AnalyzeReportClient() {
               </p>
             </div>
           )}
-          {state.success && state.analysis && (
+
+          {analysisResult && (
             <div className="space-y-6 animate-in fade-in duration-500">
               <div>
                 <h3 className="flex items-center text-lg font-semibold mb-2">
                   <FileText className="mr-2 h-5 w-5 text-primary" /> Summary
                 </h3>
                 <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md">
-                  {state.analysis.summary}
+                  {analysisResult.summary}
                 </p>
               </div>
               <div>
@@ -201,7 +276,7 @@ export function AnalyzeReportClient() {
                   Issues
                 </h3>
                 <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md">
-                  {state.analysis.potentialIssues}
+                  {analysisResult.potentialIssues}
                 </p>
               </div>
               <div>
@@ -210,7 +285,7 @@ export function AnalyzeReportClient() {
                   Steps
                 </h3>
                 <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md">
-                  {state.analysis.nextSteps}
+                  {analysisResult.nextSteps}
                 </p>
               </div>
             </div>
