@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -43,6 +44,10 @@ export async function chatWithAssistant(input: ChatWithAssistantInput): Promise<
         ]
     }
   });
+
+  if (!output) {
+    return 'I am sorry, but I cannot provide a response to that. Please try a different question.';
+  }
 
   return output.text;
 }
