@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -16,6 +17,8 @@ import { Switch } from '@/components/ui/switch';
 import { Lock, Palette, User } from 'lucide-react';
 
 export default function SettingsPage() {
+  const { theme, setTheme } = useTheme();
+
   return (
     <div className="space-y-8">
       <div>
@@ -72,7 +75,11 @@ export default function SettingsPage() {
             </div>
             <div className="flex items-center space-x-2">
                 <span>Light</span>
-                <Switch id="theme-switch" />
+                <Switch
+                  id="theme-switch"
+                  checked={theme === 'dark'}
+                  onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+                />
                 <span>Dark</span>
             </div>
           </div>
