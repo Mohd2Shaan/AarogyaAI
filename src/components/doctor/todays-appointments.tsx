@@ -46,8 +46,14 @@ export function TodaysAppointments() {
               className="flex items-center justify-between rounded-lg border p-4"
             >
               <div className="flex items-center gap-4">
-                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-green-100">
-                    <User className="h-5 w-5 text-green-600" />
+                 <div className="relative h-10 w-10">
+                  <Image
+                    src={appointment.patientAvatar}
+                    alt={appointment.patientName}
+                    fill
+                    className="rounded-full object-cover"
+                    sizes="(max-width: 768px) 10vw, 5vw"
+                  />
                 </div>
                 <div>
                   <p className="font-semibold">{appointment.patientName}</p>

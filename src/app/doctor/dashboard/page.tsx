@@ -1,10 +1,10 @@
 import { Suspense } from 'react';
 import { QuickActionCardsClient } from '@/components/doctor/quick-action-cards-client';
-import { TodaysAppointments } from '@/components/doctor/todays-appointments';
+import { TodaysAppointmentsClient } from '@/components/doctor/todays-appointments-client';
 import { PatientListClient } from '@/components/doctor/patient-list-client';
 import { AiAssistantCardClient } from '@/components/doctor/ai-assistant-card-client';
 import { InviteColleagueCardClient } from '@/components/doctor/invite-colleague-card-client';
-import { DoctorDashboardSkeleton } from '@/components/skeletons';
+import { DoctorDashboardSkeleton, AppointmentListSkeleton } from '@/components/skeletons';
 
 export default function DoctorDashboard() {
   return (
@@ -20,7 +20,9 @@ export default function DoctorDashboard() {
 
       <div className="grid grid-cols-1 gap-8 xl:grid-cols-3">
         <div className="space-y-8 xl:col-span-2">
-          <TodaysAppointments />
+          <Suspense fallback={<AppointmentListSkeleton />}>
+            <TodaysAppointmentsClient />
+          </Suspense>
         </div>
         <div className="space-y-8 hidden xl:block">
           {/* This space can be used for other cards on larger screens if needed */}
