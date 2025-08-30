@@ -1,5 +1,8 @@
+
 'use client';
 
+import React, { useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { Header } from '@/components/dashboard/header';
 import { Sidebar } from '@/components/dashboard/sidebar';
 import {
@@ -29,13 +32,30 @@ export default function DoctorLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const [searchTerm, setSearchTerm] = useState('');
+  const pathname = usePathname();
+  const isPatientPage = pathname === '/doctor/patients';
+
+  // Pass searchTerm to children only if it's the patients page
+  const childrenWithProps = React.Children.map(children, (child) => {
+    if (React.isValidElement(child) && isPatientPage) {
+      // @ts-ignore - cloning to pass props
+      return React.cloneElement(child, { searchTerm });
+    }
+    return child;
+  });
+
   return (
     <div className="grid min-h-screen w-full md:grid-cols-[220px_1fr] lg:grid-cols-[280px_1fr]">
       <Sidebar navLinks={doctorNavLinks} />
       <div className="flex flex-col">
-        <Header userType="Doctor" />
+        <Header
+          userType="Doctor"
+          searchTerm={searchTerm}
+          onSearchChange={isPatientPage ? setSearchTerm : undefined}
+        />
         <main className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6 bg-secondary/40">
-          {children}
+          {childrenWithProps}
         </main>
       </div>
     </div>

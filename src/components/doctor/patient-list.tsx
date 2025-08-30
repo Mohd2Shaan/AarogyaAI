@@ -1,3 +1,4 @@
+
 'use client';
 
 import dynamic from 'next/dynamic';
@@ -19,11 +20,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Phone, Search, Video, FileText } from 'lucide-react';
+import { Phone, Video, FileText } from 'lucide-react';
 import { mockPatients } from '@/lib/mock-data';
 import type { Patient } from '@/lib/types';
-import { DoctorDashboardSkeleton } from '../skeletons';
-import { useState } from 'react';
+import { useMemo } from 'react';
 
 const CallSimulationDialog = dynamic(() => import('../shared/call-simulation').then(mod => mod.CallSimulationDialog), {
     loading: () => <Button variant="outline" size="icon" disabled><Video className="h-4 w-4" /></Button>
@@ -31,9 +31,14 @@ const CallSimulationDialog = dynamic(() => import('../shared/call-simulation').t
 
 export function PatientList({ searchTerm }: { searchTerm: string }) {
 
-  const filteredPatients = mockPatients.filter((patient) =>
-    patient.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const filteredPatients = useMemo(() => {
+    if (!searchTerm) {
+      return mockPatients;
+    }
+    return mockPatients.filter((patient) =>
+      patient.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [searchTerm]);
 
   return (
     <Card>

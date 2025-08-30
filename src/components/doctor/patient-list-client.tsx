@@ -1,32 +1,14 @@
+
 'use client';
 
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
 import { DoctorDashboardSkeleton } from '@/components/skeletons';
-import { Input } from '../ui/input';
-import { Search } from 'lucide-react';
+import { PatientList } from './patient-list';
 
-const PatientList = dynamic(() => import('@/components/doctor/patient-list').then(mod => mod.PatientList), {
-  ssr: false,
-  loading: () => <DoctorDashboardSkeleton />,
-});
-
+// This component is kept for dashboard usage where it doesn't need external search term.
+// The patients page now uses PatientList directly.
 export function PatientListClient() {
-    const [searchTerm, setSearchTerm] = useState('');
-
     return (
-        <div>
-            <div className="relative mb-4">
-                <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-                <Input
-                    type="search"
-                    placeholder="Search patients by name..."
-                    className="w-full appearance-none bg-background pl-8 shadow-none md:w-1/3"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                />
-            </div>
-            <PatientList searchTerm={searchTerm} />
-        </div>
+        <PatientList searchTerm="" />
     );
 }
