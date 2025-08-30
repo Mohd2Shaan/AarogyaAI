@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
 import {
   Card,
   CardContent,
@@ -9,16 +8,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { PatientDashboardSkeleton } from '@/components/skeletons';
-
-const ActivityLogger = dynamic(() => import('@/components/patient/activity-logger').then(mod => mod.ActivityLogger), {
-    ssr: false,
-    loading: () => <PatientDashboardSkeleton />
-});
-
-const UpcomingAppointments = dynamic(() => import('@/components/patient/upcoming-appointments').then(mod => mod.UpcomingAppointments), {
-    ssr: false,
-    loading: () => <PatientDashboardSkeleton />
-});
+import { PatientActivityClient } from '@/components/patient/patient-activity-client';
+import { UpcomingAppointmentsClient } from '@/components/patient/upcoming-appointments-client';
 
 export default function PatientDashboard() {
   return (
@@ -34,7 +25,7 @@ export default function PatientDashboard() {
           </CardHeader>
           <CardContent>
             <Suspense fallback={<PatientDashboardSkeleton />}>
-                <ActivityLogger />
+              <PatientActivityClient />
             </Suspense>
           </CardContent>
         </Card>
@@ -42,7 +33,7 @@ export default function PatientDashboard() {
 
       <div className="grid auto-rows-max items-start gap-4 md:gap-8">
         <Suspense fallback={<PatientDashboardSkeleton />}>
-            <UpcomingAppointments />
+            <UpcomingAppointmentsClient />
         </Suspense>
       </div>
     </div>
