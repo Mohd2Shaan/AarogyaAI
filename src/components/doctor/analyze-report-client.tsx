@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useFormStatus } from 'react-dom';
@@ -266,7 +267,7 @@ export function AnalyzeReportClient() {
                 <h3 className="flex items-center text-lg font-semibold mb-2">
                   <FileText className="mr-2 h-5 w-5 text-primary" /> Summary
                 </h3>
-                <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md">
+                <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md whitespace-pre-wrap">
                   {analysisResult.summary}
                 </p>
               </div>
@@ -275,7 +276,7 @@ export function AnalyzeReportClient() {
                   <Lightbulb className="mr-2 h-5 w-5 text-primary" /> Potential
                   Issues
                 </h3>
-                <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md">
+                <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md whitespace-pre-wrap">
                   {analysisResult.potentialIssues}
                 </p>
               </div>
@@ -284,7 +285,7 @@ export function AnalyzeReportClient() {
                   <ListOrdered className="mr-2 h-5 w-5 text-primary" /> Next
                   Steps
                 </h3>
-                <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md">
+                <p className="text-sm text-muted-foreground bg-secondary p-4 rounded-md whitespace-pre-wrap">
                   {analysisResult.nextSteps}
                 </p>
               </div>
