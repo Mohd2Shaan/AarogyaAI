@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState } from 'react';
@@ -82,13 +83,9 @@ export function AiChatModal({ isOpen, onOpenChange }: AiChatModalProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <Alert variant="default" className="mx-4 bg-primary/10 border-primary/50">
-          <AlertCircle className="h-4 w-4" />
-          <AlertTitle>Disclaimer</AlertTitle>
-          <AlertDescription>
-            This AI assistant provides general information only and is not a substitute for professional medical advice.
-          </AlertDescription>
-        </Alert>
+        <div className="mx-4 p-2 border rounded-lg text-xs text-muted-foreground bg-background/50">
+          <p><strong>Disclaimer:</strong> This AI assistant provides general information only and is not a substitute for professional medical advice.</p>
+        </div>
 
         <ScrollArea className="flex-1 px-4">
           <div className="space-y-4 py-4">
