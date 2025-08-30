@@ -9,6 +9,7 @@ import {
   Calendar,
   FileText,
   UserPlus,
+  HeartPulse,
 } from 'lucide-react';
 
 const patientNavLinks = [
@@ -16,7 +17,8 @@ const patientNavLinks = [
   { href: '/patient/messages', label: 'Messages', icon: MessageSquare },
   { href: '/patient/appointments', label: 'Appointments', icon: Calendar },
   { href: '/patient/records', label: 'My Records', icon: FileText },
-  { href: '/patient/connect-specialist', label: 'Connect with Specialist', icon: UserPlus },
+  { href: '/patient/symptom-checker', label: 'Symptom Checker', icon: HeartPulse },
+  { href: '/patient/connect-specialist', label: 'Connect Specialist', icon: UserPlus },
 ];
 
 export default function PatientLayout({
