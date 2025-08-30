@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
 import { DoctorDashboardSkeleton } from '@/components/skeletons';
-import { PatientListClient } from '@/components/doctor/patient-list-client';
-import { QuickActionCardsClient } from '@/components/doctor/quick-action-cards-client';
 import { AiAssistantCardClient } from '@/components/doctor/ai-assistant-card-client';
 import { InviteColleagueCardClient } from '@/components/doctor/invite-colleague-card-client';
+import { PatientListClient } from '@/components/doctor/patient-list-client';
+import { QuickActionCardsClient } from '@/components/doctor/quick-action-cards-client';
 
 
 export default function DoctorDashboard() {
