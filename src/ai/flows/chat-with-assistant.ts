@@ -29,7 +29,6 @@ export async function chatWithAssistant(input: ChatWithAssistantInput): Promise<
     return "I'm AarogyaAI, your personal health assistant. I can provide insights based on your health data. How can I assist you today?";
   }
 
-
   const system_prompt = `You are AarogyaAI, a friendly, empathetic, and informative health and wellness assistant.
 Your primary role is to answer questions about general health, wellness, and basic medical knowledge.
 
@@ -69,9 +68,15 @@ Keep your tone positive and encouraging. Use simple, easy-to-understand language
     },
   });
 
-  if (!output || !output.text) {
+  const responseText = output?.text;
+  if (!responseText) {
     return 'I am sorry, but I cannot provide a response to that. Please try a different question.';
   }
 
-  return output.text;
+  // Ensure the disclaimer is present
+  if (!responseText.includes("Disclaimer: I am an AI assistant")) {
+     return `${responseText.trim()}\n\nDisclaimer: I am an AI assistant and not a medical professional. Please consult a qualified healthcare provider for any health concerns.`;
+  }
+  
+  return responseText;
 }
