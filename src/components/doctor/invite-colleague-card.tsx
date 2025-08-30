@@ -1,3 +1,5 @@
+'use client';
+
 import { UserPlus } from 'lucide-react';
 import {
   Card,
@@ -7,6 +9,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { InviteDoctorDialog } from './invite-doctor-dialog';
 
 export function InviteColleagueCard() {
   return (
@@ -18,14 +21,12 @@ export function InviteColleagueCard() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* This would be a form in a real app */}
-        <p className="text-sm text-muted-foreground mb-4">
-          A mock invite will be generated.
-        </p>
-        <Button className="w-full" variant="outline">
-          <UserPlus className="mr-2 h-4 w-4" />
-          Invite Doctor
-        </Button>
+        <InviteDoctorDialog>
+          <Button className="w-full" variant="outline">
+            <UserPlus className="mr-2 h-4 w-4" />
+            Invite Doctor
+          </Button>
+        </InviteDoctorDialog>
       </CardContent>
     </Card>
   );
