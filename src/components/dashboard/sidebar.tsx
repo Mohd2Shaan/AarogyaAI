@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -37,11 +38,11 @@ export function Sidebar({ navLinks }: SidebarProps) {
                   key={link.href}
                   href={link.href}
                   className={cn(
-                    'flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary',
+                    'flex items-center gap-4 rounded-lg px-4 py-3 text-muted-foreground transition-all hover:text-primary',
                     isActive && 'bg-primary text-primary-foreground hover:text-primary-foreground'
                   )}
                 >
-                  <link.icon className="h-4 w-4" />
+                  <link.icon className="h-5 w-5" />
                   {link.label}
                 </Link>
               );
