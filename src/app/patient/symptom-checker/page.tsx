@@ -68,14 +68,6 @@ function ResultDisplay({ state, onReset }: { state: SymptomCheckState, onReset: 
 
   return (
     <div className="space-y-6">
-       <Alert variant="destructive">
-        <AlertCircle className="h-4 w-4" />
-        <AlertTitle>Disclaimer</AlertTitle>
-        <AlertDescription>
-          This information is for general knowledge only and is not a substitute for professional medical advice. Please consult a doctor for diagnosis and treatment.
-        </AlertDescription>
-      </Alert>
-
       <Card>
         <CardHeader>
             <CardTitle className='flex items-center gap-2'><BrainCircuit /> Potential Conditions (Informational Only)</CardTitle>
@@ -122,35 +114,47 @@ export default function SymptomCheckerPage() {
         </p>
       </div>
 
-      {isPending && (
-         <Card className="flex flex-col items-center justify-center p-10 space-y-4">
-            <Loader2 className="h-12 w-12 animate-spin text-primary" />
-            <p className="text-lg font-medium">Analyzing your symptoms...</p>
-            <p className="text-muted-foreground text-center">Please wait while our AI assistant processes your information. <br/>This should only take a moment.</p>
-        </Card>
-      )}
+      <div className="min-h-[400px]">
+        {isPending && (
+          <Card className="flex flex-col items-center justify-center p-10 space-y-4">
+              <Loader2 className="h-12 w-12 animate-spin text-primary" />
+              <p className="text-lg font-medium">Analyzing your symptoms...</p>
+              <p className="text-muted-foreground text-center">Please wait while our AI assistant processes your information. <br/>This should only take a moment.</p>
+          </Card>
+        )}
 
-      {!isPending && !state.success && (
-        <Card>
-          <SymptomCheckerForm
-            formAction={formAction}
-            symptoms={symptoms}
-            setSymptoms={setSymptoms}
-          />
-        </Card>
-      )}
+        {!isPending && !state.success && (
+          <Card>
+            <SymptomCheckerForm
+              formAction={formAction}
+              symptoms={symptoms}
+              setSymptoms={setSymptoms}
+            />
+          </Card>
+        )}
 
-      {!isPending && state.success && state.result && (
-        <ResultDisplay state={state} onReset={handleReset} />
-      )}
+        {!isPending && state.success && state.result && (
+          <ResultDisplay state={state} onReset={handleReset} />
+        )}
 
-      {!isPending && state.error && (
-         <Alert variant="destructive">
-            <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Analysis Failed</AlertTitle>
-            <AlertDescription>{state.error}</AlertDescription>
+        {!isPending && state.error && (
+          <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertTitle>Analysis Failed</AlertTitle>
+              <AlertDescription>{state.error}</AlertDescription>
+          </Alert>
+        )}
+      </div>
+
+      <footer className="mt-8">
+        <Alert variant="destructive">
+          <AlertCircle className="h-4 w-4" />
+          <AlertTitle>Disclaimer</AlertTitle>
+          <AlertDescription>
+            This information is for general knowledge only and is not a substitute for professional medical advice. Please consult a doctor for diagnosis and treatment.
+          </AlertDescription>
         </Alert>
-      )}
+      </footer>
     </div>
   );
 }
