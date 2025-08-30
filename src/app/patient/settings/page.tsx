@@ -31,21 +31,17 @@ export default function SettingsPage() {
             <User /> Profile Settings
           </CardTitle>
           <CardDescription>
-            Update your personal and professional information.
+            Update your personal information.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
-            <Input id="fullName" defaultValue="Dr. Aarav Malhotra" />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="specialty">Specialty</Label>
-            <Input id="specialty" defaultValue="General Medicine" />
+            <Input id="fullName" defaultValue="Jane Doe" />
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" defaultValue="dr.malhotra@aarogyacare.com" />
+            <Input id="email" type="email" defaultValue="jane.doe@email.com" />
           </div>
         </CardContent>
         <CardFooter>
@@ -70,7 +66,7 @@ export default function SettingsPage() {
                 Select between light and dark mode.
               </p>
             </div>
-            <div className="flex items-center space-x-2">
+             <div className="flex items-center space-x-2">
                 <span>Light</span>
                 <Switch id="theme-switch" />
                 <span>Dark</span>
