@@ -14,8 +14,8 @@ export interface Appointment {
   patientAvatar: string;
   date: string;
   time: string;
-  type: 'Video' | 'Voice' | 'In-Person';
-  status: 'Upcoming' | 'Completed' | 'Cancelled';
+  type: string;
+  status: 'Upcoming' | 'Completed' | 'Cancelled' | 'Pending' | 'Confirmed';
 }
 
 export interface ActivityLog {

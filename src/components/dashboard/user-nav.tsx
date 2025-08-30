@@ -19,9 +19,12 @@ interface UserNavProps {
 }
 
 export function UserNav({ userType }: UserNavProps) {
-  const userName = userType === 'Doctor' ? 'Dr. Smith' : 'Jane Doe';
-  const userEmail = userType === 'Doctor' ? 'dr.smith@aarogya.ai' : 'jane.doe@email.com';
-  const avatarUrl = userType === 'Doctor' ? 'https://i.pravatar.cc/150?u=dr.smith' : 'https://i.pravatar.cc/150?u=jane.doe';
+  const isDoctor = userType === 'Doctor';
+  const userName = isDoctor ? 'Dr. Aarav' : 'Jane Doe';
+  const userEmail = isDoctor ? 'dr.aarav@aarogya.ai' : 'jane.doe@email.com';
+  const avatarUrl = isDoctor ? 'https://i.pravatar.cc/150?u=dr.aarav' : 'https://i.pravatar.cc/150?u=jane.doe';
+  const avatarFallback = isDoctor ? 'DA' : 'JD';
+
 
   return (
     <DropdownMenu>
@@ -29,7 +32,7 @@ export function UserNav({ userType }: UserNavProps) {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-9 w-9">
             <AvatarImage src={avatarUrl} alt={userName} />
-            <AvatarFallback>{userName.charAt(0)}</AvatarFallback>
+            <AvatarFallback>{avatarFallback}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
