@@ -1,3 +1,4 @@
+
 'use server';
 
 /**
@@ -21,9 +22,9 @@ const AnalyzeMedicalReportInputSchema = z.object({
 export type AnalyzeMedicalReportInput = z.infer<typeof AnalyzeMedicalReportInputSchema>;
 
 const AnalyzeMedicalReportOutputSchema = z.object({
-  summary: z.string().describe('A summary of the medical report.'),
-  potentialIssues: z.string().describe('Potential issues highlighted in the report.'),
-  nextSteps: z.string().describe('Suggested next steps based on the report.'),
+  summary: z.string().describe('A summary of the medical report, formatted as a bulleted list.'),
+  potentialIssues: z.string().describe('Potential issues highlighted in the report, formatted as a bulleted list.'),
+  nextSteps: z.string().describe('Suggested next steps based on the report, formatted as a bulleted list.'),
 });
 export type AnalyzeMedicalReportOutput = z.infer<typeof AnalyzeMedicalReportOutputSchema>;
 
@@ -35,7 +36,14 @@ const prompt = ai.definePrompt({
   name: 'analyzeMedicalReportPrompt',
   input: {schema: AnalyzeMedicalReportInputSchema},
   output: {schema: AnalyzeMedicalReportOutputSchema},
-  prompt: `You are an AI assistant specializing in analyzing medical reports. Please summarize the report, highlight any potential issues, and suggest next steps for the doctor. Use the following medical report as the primary source of information:
+  prompt: `You are an AI assistant specializing in analyzing medical reports.
+  
+Please analyze the provided medical report and provide the following information, with each section formatted as a concise bulleted list:
+1.  **Summary:** A brief overview of the key findings in the report.
+2.  **Potential Issues:** Highlight any potential medical concerns or abnormalities.
+3.  **Next Steps:** Suggest actionable next steps for the doctor based on the analysis.
+
+Use the following medical report as the primary source of information:
 
 Medical Report: {{media url=reportDataUri}}`,
 });
