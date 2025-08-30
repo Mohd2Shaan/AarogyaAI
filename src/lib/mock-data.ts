@@ -1,3 +1,4 @@
+
 import type { Patient, Appointment, Conversation, ChatMessage, ConnectionRequest } from './types';
 
 export const mockPatients: Patient[] = [

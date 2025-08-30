@@ -1,7 +1,9 @@
+
 'use client';
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Users, CalendarDays, TrendingUp, Star } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import {
   Bar,
   BarChart,
@@ -42,16 +44,21 @@ const analyticsData = [
   },
 ];
 
-const appointmentTrendsData = [
-  { month: 'Jan', total: Math.floor(Math.random() * 50) + 100 },
-  { month: 'Feb', total: Math.floor(Math.random() * 50) + 110 },
-  { month: 'Mar', total: Math.floor(Math.random() * 50) + 120 },
-  { month: 'Apr', total: Math.floor(Math.random() * 50) + 130 },
-  { month: 'May', total: Math.floor(Math.random() * 50) + 140 },
-  { month: 'Jun', total: 156 },
-];
-
 export default function AnalyticsPage() {
+  const [appointmentTrendsData, setAppointmentTrendsData] = useState<any[]>([]);
+
+  useEffect(() => {
+    // Generate data on client-side to avoid hydration mismatch
+    setAppointmentTrendsData([
+      { month: 'Jan', total: Math.floor(Math.random() * 50) + 100 },
+      { month: 'Feb', total: Math.floor(Math.random() * 50) + 110 },
+      { month: 'Mar', total: Math.floor(Math.random() * 50) + 120 },
+      { month: 'Apr', total: Math.floor(Math.random() * 50) + 130 },
+      { month: 'May', total: Math.floor(Math.random() * 50) + 140 },
+      { month: 'Jun', total: 156 },
+    ]);
+  }, []);
+
   return (
     <div className="container mx-auto">
       <div className="mb-8">
@@ -83,29 +90,33 @@ export default function AnalyticsPage() {
           <CardTitle>Appointment Trends</CardTitle>
         </CardHeader>
         <CardContent className="pl-2">
-            <ResponsiveContainer width="100%" height={350}>
-                <BarChart data={appointmentTrendsData}>
-                    <XAxis 
-                        dataKey="month"
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                    />
-                    <YAxis 
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => `${value}`}
-                    />
-                    <Tooltip 
-                        cursor={{fill: 'hsla(var(--muted))'}}
-                        contentStyle={{backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))'}}
-                    />
-                    <Bar dataKey="total" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
-                </BarChart>
-            </ResponsiveContainer>
+          <ResponsiveContainer width="100%" height={350}>
+            {appointmentTrendsData.length > 0 ? (
+              <BarChart data={appointmentTrendsData}>
+                <XAxis 
+                  dataKey="month"
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                />
+                <YAxis 
+                  stroke="#888888"
+                  fontSize={12}
+                  tickLine={false}
+                  axisLine={false}
+                  tickFormatter={(value) => `${value}`}
+                />
+                <Tooltip 
+                  cursor={{fill: 'hsla(var(--muted))'}}
+                  contentStyle={{backgroundColor: 'hsl(var(--background))', border: '1px solid hsl(var(--border))'}}
+                />
+                <Bar dataKey="total" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
+              </BarChart>
+            ) : (
+              <div className="flex items-center justify-center h-full">Loading chart data...</div>
+            )}
+          </ResponsiveContainer>
         </CardContent>
       </Card>
     </div>

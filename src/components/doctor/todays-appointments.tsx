@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -10,7 +11,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 import { mockAppointments } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
-import { CalendarIcon, User } from 'lucide-react';
+import { CalendarIcon } from 'lucide-react';
 import Image from 'next/image';
 
 export function TodaysAppointments() {
@@ -50,9 +51,9 @@ export function TodaysAppointments() {
                   <Image
                     src={appointment.patientAvatar}
                     alt={appointment.patientName}
-                    fill
+                    width={40}
+                    height={40}
                     className="rounded-full object-cover"
-                    sizes="(max-width: 768px) 10vw, 5vw"
                   />
                 </div>
                 <div>

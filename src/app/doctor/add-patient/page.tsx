@@ -1,6 +1,16 @@
+
 'use client';
 
-import { AddPatientForm } from '@/components/doctor/add-patient-form';
+import { DoctorDashboardSkeleton } from '@/components/skeletons';
+import dynamic from 'next/dynamic';
+
+const AddPatientForm = dynamic(
+  () => import('@/components/doctor/add-patient-form').then((mod) => mod.AddPatientForm),
+  {
+    loading: () => <DoctorDashboardSkeleton />,
+    ssr: false,
+  }
+);
 
 export default function AddPatientPage() {
   return (

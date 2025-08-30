@@ -26,7 +26,8 @@ import type { Patient } from '@/lib/types';
 import { useMemo } from 'react';
 
 const CallSimulationDialog = dynamic(() => import('../shared/call-simulation').then(mod => mod.CallSimulationDialog), {
-    loading: () => <Button variant="outline" size="icon" disabled><Video className="h-4 w-4" /></Button>
+    loading: () => <Button variant="outline" size="icon" disabled><Video className="h-4 w-4" /></Button>,
+    ssr: false
 });
 
 export function PatientList({ searchTerm }: { searchTerm: string }) {
