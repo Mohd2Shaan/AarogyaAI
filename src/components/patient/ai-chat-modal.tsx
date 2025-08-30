@@ -76,7 +76,7 @@ export function AiChatModal({ isOpen, onOpenChange }: AiChatModalProps) {
       <DialogContent className="sm:max-w-2xl h-[80vh] flex flex-col p-0">
         <DialogHeader className="p-4 border-b">
           <DialogTitle className="flex items-center gap-2">
-            <Sparkles className="text-primary" /> AI Health Assistant
+            <Sparkles className="text-primary" /> AI Health Assistant for Patient
           </DialogTitle>
           <DialogDescription>
             Get answers to general health questions.
