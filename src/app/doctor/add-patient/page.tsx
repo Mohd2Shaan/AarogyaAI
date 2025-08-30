@@ -1,3 +1,5 @@
+'use client';
+
 import { AddPatientForm } from '@/components/doctor/add-patient-form';
 
 export default function AddPatientPage() {

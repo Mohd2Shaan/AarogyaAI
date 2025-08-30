@@ -1,3 +1,5 @@
+'use client';
+
 import { AnalyzeReportClient } from '@/components/doctor/analyze-report-client';
 
 export default function AnalyzeReportPage() {

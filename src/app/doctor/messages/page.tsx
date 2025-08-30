@@ -1,3 +1,5 @@
+'use client';
+
 import { ChatClient } from "@/components/shared/chat-client";
 
 export default function DoctorMessagesPage() {
