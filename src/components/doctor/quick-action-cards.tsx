@@ -10,7 +10,6 @@ import {
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
@@ -24,14 +23,14 @@ const actionCards = [
         color: 'bg-blue-500 hover:bg-blue-600',
     },
     {
-        title: 'Schedule Appointment',
+        title: 'Schedule',
         description: 'Book new patient slot',
         icon: CalendarPlus,
         href: '/doctor/appointments',
         color: 'bg-green-500 hover:bg-green-600',
     },
     {
-        title: 'Add Prescription',
+        title: 'Prescription',
         description: 'Create new prescription',
         icon: FilePenLine,
         href: '/doctor/prescriptions',
@@ -45,7 +44,7 @@ const actionCards = [
         color: 'bg-orange-500 hover:bg-orange-600',
     },
     {
-        title: 'Connect with Doctor',
+        title: 'Connections',
         description: 'View connection requests',
         icon: Users,
         href: '/doctor/connections',
@@ -64,14 +63,14 @@ export function QuickActionCards() {
   return (
     <>
       {actionCards.map((card) => (
-        <Link href={card.href} key={card.title}>
+        <Link href={card.href} key={card.title} className="col-span-1">
             <Card className={`text-white transition-transform transform-gpu hover:scale-105 ${card.color}`}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-xl font-bold">{card.title}</CardTitle>
-                <card.icon className="h-6 w-6 text-white/80" />
+                <CardTitle className="text-lg font-bold">{card.title}</CardTitle>
+                <card.icon className="h-5 w-5 text-white/80" />
             </CardHeader>
             <CardContent>
-                <p className="text-sm text-white/80">{card.description}</p>
+                <p className="text-xs text-white/80">{card.description}</p>
             </CardContent>
             </Card>
         </Link>
