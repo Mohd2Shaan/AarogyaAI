@@ -1,3 +1,4 @@
+
 'use client';
 
 import { Header } from '@/components/dashboard/header';
@@ -7,6 +8,7 @@ import {
   MessageSquare,
   Calendar,
   FileText,
+  UserPlus,
 } from 'lucide-react';
 
 const patientNavLinks = [
@@ -14,6 +16,7 @@ const patientNavLinks = [
   { href: '/patient/messages', label: 'Messages', icon: MessageSquare },
   { href: '/patient/appointments', label: 'Appointments', icon: Calendar },
   { href: '/patient/records', label: 'My Records', icon: FileText },
+  { href: '/patient/connect-specialist', label: 'Connect with Specialist', icon: UserPlus },
 ];
 
 export default function PatientLayout({

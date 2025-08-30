@@ -1,3 +1,4 @@
+
 import { Suspense } from 'react';
 import {
   Card,
@@ -9,7 +10,9 @@ import {
 import { PatientDashboardSkeleton } from '@/components/skeletons';
 import { PatientActivityClient } from '@/components/patient/patient-activity-client';
 import { UpcomingAppointmentsClient } from '@/components/patient/upcoming-appointments-client';
-import { AiChatAssistantClient } from '@/components/patient/ai-chat-assistant-client';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import { UserPlus } from 'lucide-react';
 
 export default function PatientDashboard() {
   return (
@@ -32,9 +35,27 @@ export default function PatientDashboard() {
       </div>
 
       <div className="grid auto-rows-max items-start gap-4 md:gap-8">
-        <Suspense fallback={<PatientDashboardSkeleton />}>
-          <AiChatAssistantClient />
-        </Suspense>
+        <Card>
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                    <UserPlus />
+                    Connect with Specialist
+                </CardTitle>
+                <CardDescription>
+                    Find and book an appointment with a specialist.
+                </CardDescription>
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-muted-foreground mb-4">
+                    Need to see a specialist like a cardiologist or dermatologist? You can request a consultation here.
+                </p>
+                <Button asChild className="w-full">
+                    <Link href="/patient/connect-specialist">
+                        Find a Specialist
+                    </Link>
+                </Button>
+            </CardContent>
+        </Card>
         <Suspense fallback={<PatientDashboardSkeleton />}>
             <UpcomingAppointmentsClient />
         </Suspense>
