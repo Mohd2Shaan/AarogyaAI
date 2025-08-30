@@ -12,6 +12,8 @@ export interface Appointment {
   id: string;
   patientName: string;
   patientAvatar: string;
+  doctor: string;
+  department: string;
   date: string;
   time: string;
   type: string;
