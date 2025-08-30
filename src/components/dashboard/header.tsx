@@ -1,7 +1,8 @@
+
 'use client';
 
 import Link from 'next/link';
-import { Bell, Menu, Search } from 'lucide-react';
+import { Bell, Menu, Search, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import { UserNav } from './user-nav';
 import { Input } from '../ui/input';
 import { Badge } from '../ui/badge';
 import { Logo } from '../icons';
+import { AiChatModal } from '../patient/ai-chat-modal';
 
 interface HeaderProps {
   userType: 'Doctor' | 'Patient';
@@ -21,6 +23,7 @@ type DoctorStatus = 'Available' | 'Busy' | 'Offline';
 
 export function Header({ userType, searchTerm, onSearchChange }: HeaderProps) {
   const [status, setStatus] = useState<DoctorStatus>('Available');
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
     <header className="flex h-16 items-center gap-4 border-b bg-background px-4 lg:px-6">
@@ -28,21 +31,28 @@ export function Header({ userType, searchTerm, onSearchChange }: HeaderProps) {
         {/* Mobile menu can be added here if needed */}
       </div>
       <div className="w-full flex-1">
-        <form>
-          <div className="relative">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              type="search"
-              placeholder={onSearchChange ? "Search patients..." : "Search..."}
-              className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
-              value={searchTerm}
-              onChange={(e) => onSearchChange?.(e.target.value)}
-              disabled={!onSearchChange}
-            />
-          </div>
-        </form>
+        {userType === 'Patient' ? (
+           <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={() => setIsChatOpen(true)}>
+            <Sparkles className="mr-2 h-4 w-4 text-primary" />
+            Ask AarogyaAI about your health, daily routine...
+          </Button>
+        ) : (
+          <form>
+            <div className="relative">
+              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder={onSearchChange ? 'Search patients...' : 'Search...'}
+                className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+                value={searchTerm}
+                onChange={(e) => onSearchChange?.(e.target.value)}
+                disabled={!onSearchChange}
+              />
+            </div>
+          </form>
+        )}
       </div>
-       {userType === 'Doctor' && (
+      {userType === 'Doctor' && (
         <div className="hidden md:flex items-center gap-2 text-sm">
           <Button
             variant="ghost"
@@ -72,10 +82,11 @@ export function Header({ userType, searchTerm, onSearchChange }: HeaderProps) {
       )}
       <Button variant="ghost" size="icon" className="rounded-full relative">
         <Bell className="h-5 w-5" />
-         <Badge className="absolute top-0 right-0 h-5 w-5 justify-center p-0 text-xs">3</Badge>
+        <Badge className="absolute top-0 right-0 h-5 w-5 justify-center p-0 text-xs">3</Badge>
         <span className="sr-only">Toggle notifications</span>
       </Button>
       <UserNav userType={userType} />
+      {userType === 'Patient' && <AiChatModal isOpen={isChatOpen} onOpenChange={setIsChatOpen} />}
     </header>
   );
 }

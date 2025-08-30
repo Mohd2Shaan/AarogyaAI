@@ -11,6 +11,7 @@ import { PatientDashboardSkeleton } from '@/components/skeletons';
 import { UpcomingAppointmentsClient } from '@/components/patient/upcoming-appointments-client';
 import { QuickActionCards } from '@/components/patient/quick-action-cards';
 import { PatientActivityClient } from '@/components/patient/patient-activity-client';
+import { AiChatAssistantClient } from '@/components/patient/ai-chat-assistant-client';
 
 export default function PatientDashboard() {
   return (
@@ -46,6 +47,7 @@ export default function PatientDashboard() {
         <Suspense fallback={<PatientDashboardSkeleton />}>
             <UpcomingAppointmentsClient />
         </Suspense>
+        <AiChatAssistantClient />
       </div>
     </div>
   );

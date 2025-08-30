@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -8,7 +9,7 @@ import {
     CardTitle,
 } from '@/components/ui/card';
 import { Button } from '../ui/button';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Sparkles } from 'lucide-react';
 import { AiChatModal } from './ai-chat-modal';
 import { useState } from 'react';
 
@@ -18,7 +19,7 @@ export function AiChatAssistantClient() {
         <>
             <Card>
                 <CardHeader>
-                    <CardTitle>AI Chat Assistant</CardTitle>
+                    <CardTitle className='flex items-center gap-2'><Sparkles /> AI Assistant</CardTitle>
                     <CardDescription>
                         Get quick answers to general health questions.
                     </CardDescription>
@@ -26,7 +27,7 @@ export function AiChatAssistantClient() {
                 <CardContent>
                     <Button className="w-full" onClick={() => setIsChatOpen(true)}>
                         <MessageSquare className="mr-2 h-4 w-4" />
-                        Chat with AI
+                        Chat with AarogyaAI
                     </Button>
                 </CardContent>
             </Card>
