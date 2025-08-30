@@ -74,13 +74,15 @@ export default function ConnectSpecialistPage() {
                 Dr. {specialist.name.split(' ').slice(1).join(' ')} is a renowned expert in {specialist.specialty} with over 10 years of experience.
               </p>
             </CardContent>
-            <CardFooter className="flex gap-2">
-              <Button className="w-full">
-                <CalendarPlus className="mr-2 h-4 w-4" /> Book Appointment
-              </Button>
-              <Button variant="outline" className="w-full">
-                <MessageSquare className="mr-2 h-4 w-4" /> Send Message
-              </Button>
+            <CardFooter>
+                <div className="w-full grid grid-cols-2 gap-2">
+                    <Button>
+                        <CalendarPlus className="mr-2 h-4 w-4" /> Book Appointment
+                    </Button>
+                    <Button variant="outline">
+                        <MessageSquare className="mr-2 h-4 w-4" /> Send Message
+                    </Button>
+                </div>
             </CardFooter>
           </Card>
         ))}
