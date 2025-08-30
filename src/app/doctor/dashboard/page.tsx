@@ -16,13 +16,21 @@ export default function DoctorDashboard() {
         </p>
       </div>
 
+      <div className="grid grid-cols-1 gap-8 xl:grid-cols-3">
+        <div className="space-y-8 xl:col-span-2">
+          <TodaysAppointments />
+        </div>
+        <div className="space-y-8 hidden xl:block">
+            {/* This space can be used for other cards on larger screens if needed */}
+        </div>
+      </div>
+      
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
         <QuickActionCards />
       </div>
 
       <div className="grid grid-cols-1 gap-8 xl:grid-cols-3">
         <div className="space-y-8 xl:col-span-2">
-          <TodaysAppointments />
           <PatientList />
         </div>
         <div className="space-y-8">
