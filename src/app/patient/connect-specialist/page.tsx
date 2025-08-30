@@ -14,8 +14,10 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { mockSpecialists } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
-import { CalendarPlus, MessageSquare } from 'lucide-react';
+import { MessageSquare } from 'lucide-react';
 import type { Specialist } from '@/lib/types';
+import { BookAppointmentDialog } from '@/components/patient/book-appointment-dialog';
+import Link from 'next/link';
 
 const getStatusClass = (status: Specialist['status']) => {
   switch (status) {
@@ -76,11 +78,11 @@ export default function ConnectSpecialistPage() {
             </CardContent>
             <CardFooter>
                 <div className="w-full grid grid-cols-2 gap-2">
-                    <Button>
-                        <CalendarPlus className="mr-2 h-4 w-4" /> Book Appointment
-                    </Button>
-                    <Button variant="outline">
-                        <MessageSquare className="mr-2 h-4 w-4" /> Send Message
+                    <BookAppointmentDialog specialistName={specialist.name} />
+                    <Button variant="outline" asChild>
+                        <Link href="/patient/messages">
+                            <MessageSquare className="mr-2 h-4 w-4" /> Send Message
+                        </Link>
                     </Button>
                 </div>
             </CardFooter>
