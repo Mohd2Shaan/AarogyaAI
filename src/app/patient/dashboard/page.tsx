@@ -10,11 +10,25 @@ import {
 import { PatientDashboardSkeleton } from '@/components/skeletons';
 import { UpcomingAppointmentsClient } from '@/components/patient/upcoming-appointments-client';
 import { QuickActionCards } from '@/components/patient/quick-action-cards';
+import { PatientActivityClient } from '@/components/patient/patient-activity-client';
 
 export default function PatientDashboard() {
   return (
     <div className="grid gap-8 lg:grid-cols-3">
       <div className="grid auto-rows-max items-start gap-8 lg:col-span-2">
+        <Card>
+           <CardHeader>
+            <CardTitle>Daily Activity Log</CardTitle>
+            <CardDescription>
+              Keep a record of your daily medications, meals, and activities.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Suspense fallback={<PatientDashboardSkeleton />}>
+              <PatientActivityClient />
+            </Suspense>
+          </CardContent>
+        </Card>
         <Card>
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
