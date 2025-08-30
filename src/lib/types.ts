@@ -58,3 +58,11 @@ export interface ConnectionRequest {
     requestDate: Date;
     status: 'pending' | 'accepted' | 'declined';
 }
+
+export interface Specialist {
+  id: string;
+  name: string;
+  specialty: string;
+  avatar: string;
+  status: 'Available' | 'Busy' | 'Offline';
+}

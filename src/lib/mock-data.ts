@@ -1,5 +1,5 @@
 
-import type { Patient, Appointment, Conversation, ChatMessage, ConnectionRequest } from './types';
+import type { Patient, Appointment, Conversation, ChatMessage, ConnectionRequest, Specialist } from './types';
 
 export const mockPatients: Patient[] = [
   {
@@ -148,5 +148,50 @@ export const mockConnectionRequests: ConnectionRequest[] = [
     },
     requestDate: new Date(new Date().setDate(new Date().getDate() - 3)),
     status: 'accepted',
+  },
+];
+
+export const mockSpecialists: Specialist[] = [
+  {
+    id: 'sp1',
+    name: 'Dr. Evelyn Reed',
+    specialty: 'Cardiology',
+    avatar: 'https://i.pravatar.cc/150?u=dr.evelyn.reed',
+    status: 'Available',
+  },
+  {
+    id: 'sp2',
+    name: 'Dr. Samuel Chen',
+    specialty: 'Dermatology',
+    avatar: 'https://i.pravatar.cc/150?u=dr.samuel.chen',
+    status: 'Busy',
+  },
+  {
+    id: 'sp3',
+    name: 'Dr. Maria Garcia',
+    specialty: 'Orthopedics',
+    avatar: 'https://i.pravatar.cc/150?u=dr.maria.garcia',
+    status: 'Available',
+  },
+  {
+    id: 'sp4',
+    name: 'Dr. Ben Carter',
+    specialty: 'Neurology',
+    avatar: 'https://i.pravatar.cc/150?u=dr.ben.carter',
+    status: 'Offline',
+  },
+   {
+    id: 'sp5',
+    name: 'Dr. Olivia White',
+    specialty: 'Pediatrics',
+    avatar: 'https://i.pravatar.cc/150?u=dr.olivia.white',
+    status: 'Available',
+  },
+  {
+    id: 'sp6',
+    name: 'Dr. James Wilson',
+    specialty: 'Oncology',
+    avatar: 'https://i.pravatar.cc/150?u=dr.james.wilson',
+    status: 'Busy',
   },
 ];
