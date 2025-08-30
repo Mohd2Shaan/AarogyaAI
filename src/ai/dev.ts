@@ -14,6 +14,14 @@ import('@/ai/flows/analyze-medical-report').then(module => {
   }
 });
 
+import('@/ai/flows/symptom-checker').then(module => {
+  for (const key in module) {
+    if (module[key] instanceof Flow) {
+      flows.push(module[key]);
+    }
+  }
+});
+
 run({
   flows,
 });

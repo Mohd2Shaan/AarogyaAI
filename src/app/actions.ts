@@ -1,10 +1,12 @@
+
 'use server';
 
 import { analyzeMedicalReport, type AnalyzeMedicalReportOutput } from '@/ai/flows/analyze-medical-report';
+import { checkSymptoms, type CheckSymptomsOutput } from '@/ai/flows/symptom-checker';
 import { logAuditEvent } from '@/lib/audit';
 import { revalidatePath } from 'next/cache';
 
-interface FormState {
+interface AnalyzeReportFormState {
   success: boolean;
   message: string;
   analysis?: AnalyzeMedicalReportOutput;
@@ -16,9 +18,9 @@ interface FormState {
 const analysisStore: Record<string, AnalyzeMedicalReportOutput> = {};
 
 export async function handleAnalyzeReport(
-  prevState: FormState,
+  prevState: AnalyzeReportFormState,
   formData: FormData
-): Promise<FormState> {
+): Promise<AnalyzeReportFormState> {
   const reportDataUri = formData.get('reportDataUri') as string;
   const reportName = formData.get('reportName') as string;
 
@@ -63,4 +65,32 @@ export async function getAnalysisResult(analysisId: string): Promise<AnalyzeMedi
         return analysisStore[analysisId];
     }
     return null;
+}
+
+
+// Symptom Checker Action
+export interface SymptomCheckState {
+    success: boolean;
+    result: CheckSymptomsOutput | null;
+    error: string | null;
+}
+
+export async function handleCheckSymptoms(
+    prevState: SymptomCheckState,
+    formData: FormData
+): Promise<SymptomCheckState> {
+    const symptoms = formData.get('symptoms') as string;
+
+    if (!symptoms || symptoms.trim().length < 10) {
+        return { success: false, result: null, error: 'Please describe your symptoms in more detail.' };
+    }
+
+    try {
+        const result = await checkSymptoms({ symptoms });
+        return { success: true, result, error: null };
+    } catch(e) {
+        console.error("Symptom checker failed", e);
+        const error = e instanceof Error ? e.message : 'An unexpected error occurred.';
+        return { success: false, result: null, error };
+    }
 }
