@@ -44,8 +44,17 @@ const analyticsData = [
   },
 ];
 
+const initialAppointmentTrendsData = [
+    { month: 'Jan', total: 0 },
+    { month: 'Feb', total: 0 },
+    { month: 'Mar', total: 0 },
+    { month: 'Apr', total: 0 },
+    { month: 'May', total: 0 },
+    { month: 'Jun', total: 0 },
+]
+
 export default function AnalyticsPage() {
-  const [appointmentTrendsData, setAppointmentTrendsData] = useState<any[]>([]);
+  const [appointmentTrendsData, setAppointmentTrendsData] = useState(initialAppointmentTrendsData);
 
   useEffect(() => {
     // Generate data on client-side to avoid hydration mismatch
@@ -91,7 +100,7 @@ export default function AnalyticsPage() {
         </CardHeader>
         <CardContent className="pl-2">
           <ResponsiveContainer width="100%" height={350}>
-            {appointmentTrendsData.length > 0 ? (
+            {appointmentTrendsData[0].total > 0 ? (
               <BarChart data={appointmentTrendsData}>
                 <XAxis 
                   dataKey="month"

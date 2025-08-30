@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -51,6 +52,9 @@ export function CallSimulationDialog({
     const secs = (seconds % 60).toString().padStart(2, '0');
     return `${mins}:${secs}`;
   };
+  
+  const patientImageId = patientName.replace(/\s/g, '');
+
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
@@ -67,18 +71,19 @@ export function CallSimulationDialog({
           {callType === 'video' ? (
             <div className="w-full h-full relative">
               <Image
-                src={`https://picsum.photos/800/600?random=${patientName}`}
+                src={`https://picsum.photos/seed/${patientImageId}/800/600`}
                 alt="Patient Video"
-                layout="fill"
+                fill
                 objectFit="cover"
                 data-ai-hint="person portrait"
                 className="transition-opacity duration-300"
+                priority
               />
               <div className="absolute bottom-4 right-4 h-48 w-36 rounded-lg overflow-hidden border-2 border-white shadow-lg">
                 <Image
-                  src="https://picsum.photos/300/400?random=doctor"
+                  src="https://picsum.photos/seed/doctor/300/400"
                   alt="Doctor Video"
-                  layout="fill"
+                  fill
                   objectFit="cover"
                   data-ai-hint="doctor portrait"
                   className={`transition-opacity duration-300 ${

@@ -12,13 +12,11 @@ import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import type { MessageData } from 'genkit';
 
-
 const ChatWithAssistantInputSchema = z.object({
   prompt: z.string(),
   history: z.array(z.custom<MessageData>()).optional(),
 });
 export type ChatWithAssistantInput = z.infer<typeof ChatWithAssistantInputSchema>;
-
 
 export async function chatWithAssistant(input: ChatWithAssistantInput): Promise<string> {
   const system_prompt = `You are Aarogya AI, a friendly, empathetic, and informative health and wellness assistant.
@@ -34,31 +32,30 @@ Your primary role is to answer questions about general health, wellness, and bas
 
 Keep your tone positive and encouraging. Use simple, easy-to-understand language.`;
 
-
   const { output } = await ai.generate({
     prompt: input.prompt,
     history: input.history,
     system: system_prompt,
     config: {
-        safetySettings: [
-            {
-                category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
-                threshold: 'BLOCK_NONE',
-            },
-            {
-                category: 'HARM_CATEGORY_HARASSMENT',
-                threshold: 'BLOCK_NONE',
-            },
-            {
-                category: 'HARM_CATEGORY_HATE_SPEECH',
-                threshold: 'BLOCK_NONE',
-            },
-            {
-                category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
-                threshold: 'BLOCK_NONE',
-            },
-        ]
-    }
+      safetySettings: [
+        {
+          category: 'HARM_CATEGORY_DANGEROUS_CONTENT',
+          threshold: 'BLOCK_NONE',
+        },
+        {
+          category: 'HARM_CATEGORY_HARASSMENT',
+          threshold: 'BLOCK_NONE',
+        },
+        {
+          category: 'HARM_CATEGORY_HATE_SPEECH',
+          threshold: 'BLOCK_NONE',
+        },
+        {
+          category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT',
+          threshold: 'BLOCK_NONE',
+        },
+      ],
+    },
   });
 
   if (!output || !output.text) {
