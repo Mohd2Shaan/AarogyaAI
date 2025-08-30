@@ -49,17 +49,21 @@ export function AiChatModal({ isOpen, onOpenChange }: AiChatModalProps) {
       senderId: 'patient',
       timestamp: new Date(),
     };
-
-    setMessages((prev) => [...prev, userMessage]);
+    
+    const currentInput = input;
+    const newMessages = [...messages, userMessage];
+    setMessages(newMessages);
     setInput('');
     setIsLoading(true);
 
     try {
-      const history = messages.map(m => ({
+      const history = newMessages.map(m => ({
           role: m.senderId === 'ai' ? 'model' : 'user',
           parts: [{text: m.text}]
       }));
-      const aiResponseText = await chatWithAssistant({prompt: input, history});
+
+      // We pass the full history, so the prompt to the flow is the last message text.
+      const aiResponseText = await chatWithAssistant({prompt: currentInput, history: history.slice(0, -1)});
 
       const aiMessage: ChatMessage = {
         id: `ai-${Date.now()}`,
