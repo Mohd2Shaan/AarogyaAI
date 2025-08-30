@@ -17,6 +17,7 @@ import type { ChatMessage } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { chatWithAssistant } from '@/ai/flows/chat-with-assistant';
 import { Alert, AlertDescription } from '../ui/alert';
+import type { MessageData } from 'genkit';
 
 interface AiChatModalProps {
     isOpen: boolean;
@@ -57,8 +58,7 @@ export function AiChatModal({ isOpen, onOpenChange }: AiChatModalProps) {
     setIsLoading(true);
 
     try {
-      // The history should be all messages *before* the new one.
-      const history = messages.map(m => ({
+      const history: MessageData[] = newMessages.slice(0, -1).map(m => ({
           role: m.senderId === 'ai' ? 'model' : 'user',
           parts: [{text: m.text}]
       }));
