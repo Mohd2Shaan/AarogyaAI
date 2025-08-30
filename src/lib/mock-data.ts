@@ -1,4 +1,4 @@
-import type { Patient, Appointment, Conversation, ChatMessage } from './types';
+import type { Patient, Appointment, Conversation, ChatMessage, ConnectionRequest } from './types';
 
 export const mockPatients: Patient[] = [
   {
@@ -119,3 +119,33 @@ export const mockMessages: { [key: string]: ChatMessage[] } = {
     { id: 'msg8', text: 'The test results are attached.', senderId: 'patient', timestamp: new Date(new Date().getTime() - 24 * 60 * 60000) },
   ],
 };
+
+export const mockConnectionRequests: ConnectionRequest[] = [
+  {
+    id: 'req1',
+    patient: {
+      name: 'Carlos Rodriguez',
+      avatar: 'https://i.pravatar.cc/150?u=carlos.rodriguez',
+    },
+    requestDate: new Date(new Date().setDate(new Date().getDate() - 1)), // Yesterday
+    status: 'pending',
+  },
+  {
+    id: 'req2',
+    patient: {
+      name: 'Aisha Khan',
+      avatar: 'https://i.pravatar.cc/150?u=aisha.khan',
+    },
+    requestDate: new Date(new Date().setDate(new Date().getDate() - 2)), // 2 days ago
+    status: 'pending',
+  },
+    {
+    id: 'req3',
+    patient: {
+      name: 'Bennet Wilson',
+      avatar: 'https://i.pravatar.cc/150?u=bennet.wilson',
+    },
+    requestDate: new Date(new Date().setDate(new Date().getDate() - 3)),
+    status: 'accepted',
+  },
+];

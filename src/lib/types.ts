@@ -48,3 +48,13 @@ export interface Conversation {
   lastMessageTimestamp: Date;
   unreadCount: number;
 }
+
+export interface ConnectionRequest {
+    id: string;
+    patient: {
+        name: string;
+        avatar: string;
+    };
+    requestDate: Date;
+    status: 'pending' | 'accepted' | 'declined';
+}
