@@ -21,26 +21,7 @@ export type ChatWithAssistantInput = z.infer<typeof ChatWithAssistantInputSchema
 
 
 export async function chatWithAssistant(input: ChatWithAssistantInput): Promise<string> {
-  const sensitiveKeywords = ["fever", "pain", "headache", "symptoms", "diagnosis", "prescribe", "treatment", "what should I do", "hurts", "sick"];
-  const isSensitive = sensitiveKeywords.some(keyword => input.prompt.toLowerCase().includes(keyword));
-
-  let system_prompt;
-
-  if (isSensitive) {
-    system_prompt = `You are Aarogya AI, a health and wellness assistant. You MUST respond to the user's question about their symptoms.
-You are strictly forbidden from providing a diagnosis or prescription. Your only task is to provide a single, short, and safe general health tip, and then immediately tell the user to seek professional advice.
-
-User's input: "${input.prompt}"
-
-You MUST select your response from ONE of the following options, and do not provide any other information or pleasantries:
-
-1. "For general wellness, it's often recommended to get plenty of rest and drink fluids. Please consult with a healthcare professional for personalized advice."
-2. "I understand your concern. It's important to speak with a healthcare professional to get an accurate diagnosis. Please consult with a doctor."
-3. "I cannot provide specific medical advice. For a proper diagnosis and treatment plan, you should see a doctor."
-
-Select the most appropriate response from the options above. Do not generate a new response.`;
-  } else {
-     system_prompt = `You are Aarogya AI, a friendly, empathetic, and informative health and wellness assistant.
+  const system_prompt = `You are Aarogya AI, a friendly, empathetic, and informative health and wellness assistant.
 Your primary role is to answer questions about general health, wellness, and basic medical knowledge.
 
 **Crucial Safety Instructions:**
@@ -52,7 +33,6 @@ Your primary role is to answer questions about general health, wellness, and bas
 3.  **Disclaimer:** Every single response MUST end with the following disclaimer on a new line: "Disclaimer: I am an AI assistant and not a medical professional. Please consult a qualified healthcare provider for any health concerns."
 
 Keep your tone positive and encouraging. Use simple, easy-to-understand language.`;
-  }
 
 
   const { output } = await ai.generate({
