@@ -27,6 +27,7 @@ import {
   DialogTrigger,
 } from '../ui/dialog';
 import { Card, CardContent } from '../ui/card';
+import { cn } from '@/lib/utils';
 
 export function ActivityLogger() {
   const [medication, setMedication] = useState('');
@@ -35,6 +36,8 @@ export function ActivityLogger() {
   const [dinner, setDinner] = useState('');
   const [activities, setActivities] = useState('');
   const [isSaving, setIsSaving] = useState(false);
+
+  const isSubmittable = [medication, breakfast, lunch, dinner, activities].some(field => field.trim() !== '');
 
   const resetForm = () => {
     setMedication('');
@@ -132,7 +135,7 @@ export function ActivityLogger() {
       <div className="flex justify-end gap-2 mt-6">
         <Dialog>
           <DialogTrigger asChild>
-            <Button variant="outline">
+            <Button variant="outline" disabled={!isSubmittable}>
               <ClipboardList className="mr-2 h-4 w-4" /> Generate Report
             </Button>
           </DialogTrigger>
@@ -162,7 +165,7 @@ export function ActivityLogger() {
             </Card>
           </DialogContent>
         </Dialog>
-        <Button onClick={handleSave} disabled={isSaving} className="bg-accent hover:bg-accent/90">
+        <Button onClick={handleSave} disabled={!isSubmittable || isSaving} className={cn(!isSubmittable && "bg-muted-foreground hover:bg-muted-foreground/90")}>
           {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
           Save Log
         </Button>
