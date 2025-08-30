@@ -2,6 +2,7 @@ import { Header } from '@/components/dashboard/header';
 
 const doctorNavLinks = [
   { href: '/doctor/dashboard', label: 'Dashboard' },
+  { href: '/doctor/messages', label: 'Messages' },
   { href: '/doctor/add-patient', label: 'Add Patient' },
   { href: '/doctor/analyze-report', label: 'Analyze Report' },
 ];

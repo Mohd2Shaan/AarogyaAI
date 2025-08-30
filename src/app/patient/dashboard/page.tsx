@@ -9,6 +9,7 @@ import {
 import { PatientDashboardSkeleton } from '@/components/skeletons';
 import { PatientActivityClient } from '@/components/patient/patient-activity-client';
 import { UpcomingAppointmentsClient } from '@/components/patient/upcoming-appointments-client';
+import { AiChatAssistantClient } from '@/components/patient/ai-chat-assistant-client';
 
 export default function PatientDashboard() {
   return (
@@ -31,6 +32,9 @@ export default function PatientDashboard() {
       </div>
 
       <div className="grid auto-rows-max items-start gap-4 md:gap-8">
+        <Suspense fallback={<PatientDashboardSkeleton />}>
+          <AiChatAssistantClient />
+        </Suspense>
         <Suspense fallback={<PatientDashboardSkeleton />}>
             <UpcomingAppointmentsClient />
         </Suspense>

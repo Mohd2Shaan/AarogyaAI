@@ -1,4 +1,4 @@
-import type { Patient, Appointment } from './types';
+import type { Patient, Appointment, Conversation, ChatMessage } from './types';
 
 export const mockPatients: Patient[] = [
   {
@@ -59,3 +59,45 @@ export const mockAppointments: Appointment[] = [
     status: 'Upcoming',
   },
 ];
+
+
+export const mockConversations: Conversation[] = [
+    {
+        id: '1',
+        participant: { name: 'John Doe', avatar: 'https://i.pravatar.cc/150?u=john.doe' },
+        lastMessage: 'I will. Thank you, Doctor!',
+        lastMessageTimestamp: new Date(new Date().getTime() - 5 * 60000), // 5 minutes ago
+        unreadCount: 0,
+    },
+    {
+        id: '2',
+        participant: { name: 'Jane Smith', avatar: 'https://i.pravatar.cc/150?u=jane.smith' },
+        lastMessage: 'Yes, I\'ve been taking the new medication as prescribed.',
+        lastMessageTimestamp: new Date(new Date().getTime() - 2 * 60 * 60000), // 2 hours ago
+        unreadCount: 2,
+    },
+     {
+        id: '3',
+        participant: { name: 'Peter Jones', avatar: 'https://i.pravatar.cc/150?u=peter.jones' },
+        lastMessage: 'The test results are attached.',
+        lastMessageTimestamp: new Date(new Date().getTime() - 24 * 60 * 60000), // 1 day ago
+        unreadCount: 0,
+    },
+];
+
+export const mockMessages: { [key: string]: ChatMessage[] } = {
+  '1': [
+    { id: 'msg1', text: 'Good morning, John. How are you feeling today?', senderId: 'doctor', timestamp: new Date(new Date().getTime() - 10 * 60000) },
+    { id: 'msg2', text: 'I\'m feeling much better, thanks for asking.', senderId: 'patient', timestamp: new Date(new Date().getTime() - 8 * 60000) },
+    { id: 'msg3', text: 'That\'s great to hear. Remember to keep up with your exercises.', senderId: 'doctor', timestamp: new Date(new Date().getTime() - 6 * 60000) },
+    { id: 'msg4', text: 'I will. Thank you, Doctor!', senderId: 'patient', timestamp: new Date(new Date().getTime() - 5 * 60000) },
+  ],
+  '2': [
+    { id: 'msg5', text: 'Hi Jane, checking in on your progress.', senderId: 'doctor', timestamp: new Date(new Date().getTime() - 2 * 60 * 60000 - 60000) },
+    { id: 'msg6', text: 'Yes, I\'ve been taking the new medication as prescribed.', senderId: 'patient', timestamp: new Date(new Date().getTime() - 2 * 60 * 60000) },
+  ],
+   '3': [
+    { id: 'msg7', text: 'Hi Peter, please upload your latest test results when you can.', senderId: 'doctor', timestamp: new Date(new Date().getTime() - 25 * 60 * 60000) },
+    { id: 'msg8', text: 'The test results are attached.', senderId: 'patient', timestamp: new Date(new Date().getTime() - 24 * 60 * 60000) },
+  ],
+};

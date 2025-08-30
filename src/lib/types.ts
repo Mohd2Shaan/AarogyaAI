@@ -29,3 +29,22 @@ export interface ActivityLog {
   };
   activities: string;
 }
+
+export interface ChatMessage {
+  id: string;
+  text: string;
+  senderId: 'doctor' | 'patient' | 'ai';
+  timestamp: Date;
+  readStatus?: boolean;
+}
+
+export interface Conversation {
+  id: string;
+  participant: {
+    name: string;
+    avatar: string;
+  };
+  lastMessage: string;
+  lastMessageTimestamp: Date;
+  unreadCount: number;
+}

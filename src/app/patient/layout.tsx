@@ -2,6 +2,7 @@ import { Header } from '@/components/dashboard/header';
 
 const patientNavLinks = [
   { href: '/patient/dashboard', label: 'Dashboard' },
+  { href: '/patient/messages', label: 'Messages' },
   { href: '/patient/appointments', label: 'Appointments' },
   { href: '/patient/records', label: 'My Records' },
 ];
