@@ -1,7 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useFormStatus } from 'react-dom';
+import { useEffect, useRef, useState, useActionState } from 'react';
 import {
   FileText,
   Lightbulb,
@@ -78,7 +78,7 @@ function AnalysisResultSkeleton() {
 
 
 export function AnalyzeReportClient() {
-  const [state, formAction] = useFormState(handleAnalyzeReport, initialState);
+  const [state, formAction] = useActionState(handleAnalyzeReport, initialState);
   const [analysisResult, setAnalysisResult] = useState<AnalyzeMedicalReportOutput | null>(null);
   const [isPolling, setIsPolling] = useState(false);
   const [file, setFile] = useState<File | null>(null);
