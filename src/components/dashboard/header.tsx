@@ -34,7 +34,7 @@ export function Header({ userType, searchTerm, onSearchChange }: HeaderProps) {
         {userType === 'Patient' ? (
            <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={() => setIsChatOpen(true)}>
             <Sparkles className="mr-2 h-4 w-4 text-primary" />
-            Ask AarogyaAI about your health, daily routine...
+            Ask me about your health profile, daily routine...
           </Button>
         ) : (
           <form>

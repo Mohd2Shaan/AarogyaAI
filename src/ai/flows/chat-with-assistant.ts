@@ -19,7 +19,18 @@ const ChatWithAssistantInputSchema = z.object({
 export type ChatWithAssistantInput = z.infer<typeof ChatWithAssistantInputSchema>;
 
 export async function chatWithAssistant(input: ChatWithAssistantInput): Promise<string> {
-  const system_prompt = `You are Aarogya AI, a friendly, empathetic, and informative health and wellness assistant.
+  const normalizedPrompt = input.prompt.toLowerCase().trim();
+
+  // Handle conversational queries with hardcoded responses
+  if (normalizedPrompt.includes('how are you')) {
+    return "I'm an AI assistant, so I don't have feelings, but I'm here and ready to help you with your health questions. What would you like to know about your health profile or daily routine?";
+  }
+  if (normalizedPrompt.includes('what is your name') || normalizedPrompt.includes("what's your name")) {
+    return "I'm AarogyaAI, your personal health assistant. I can provide insights based on your health data. How can I assist you today?";
+  }
+
+
+  const system_prompt = `You are AarogyaAI, a friendly, empathetic, and informative health and wellness assistant.
 Your primary role is to answer questions about general health, wellness, and basic medical knowledge.
 
 **Crucial Safety Instructions:**

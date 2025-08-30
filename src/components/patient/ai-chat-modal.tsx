@@ -2,11 +2,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Loader2, Send, Sparkles } from 'lucide-react';
+import { AlertCircle, Loader2, Send, Sparkles } from 'lucide-react';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -17,6 +16,7 @@ import { cn } from '@/lib/utils';
 import type { ChatMessage } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { chatWithAssistant } from '@/ai/flows/chat-with-assistant';
+import { Alert, AlertDescription } from '../ui/alert';
 
 interface AiChatModalProps {
     isOpen: boolean;
@@ -89,9 +89,12 @@ export function AiChatModal({ isOpen, onOpenChange }: AiChatModalProps) {
           <DialogTitle className="flex items-center gap-2">
             <Sparkles className="text-primary" /> AI Health Assistant
           </DialogTitle>
-          <DialogDescription>
-            Ask about your health, daily routine, and more.
-          </DialogDescription>
+          <Alert variant="destructive" className="p-2 text-xs">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>
+                This AI assistant provides general information only and is not a substitute for professional medical advice.
+            </AlertDescription>
+          </Alert>
         </DialogHeader>
 
         <ScrollArea className="flex-1 px-4" ref={scrollAreaRef}>
