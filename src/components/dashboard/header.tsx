@@ -1,83 +1,50 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Menu } from 'lucide-react';
+import { Bell, Menu, Search } from 'lucide-react';
 
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { UserNav } from './user-nav';
+import { Input } from '../ui/input';
+import { Badge } from '../ui/badge';
 import { Logo } from '../icons';
-
-interface NavLink {
-  href: string;
-  label: string;
-}
 
 interface HeaderProps {
   userType: 'Doctor' | 'Patient';
-  navLinks: NavLink[];
 }
 
-export function Header({ userType, navLinks }: HeaderProps) {
-  const pathname = usePathname();
-
-  const NavLinks = ({ className }: { className?: string }) => (
-    <nav className={cn('flex items-center space-x-4 lg:space-x-6', className)}>
-      {navLinks.map((link) => (
-        <Link
-          key={link.href}
-          href={link.href}
-          className={cn(
-            'text-sm font-medium transition-colors hover:text-primary',
-            pathname.startsWith(link.href)
-              ? 'text-primary'
-              : 'text-muted-foreground'
-          )}
-        >
-          {link.label}
-        </Link>
-      ))}
-    </nav>
-  );
-
+export function Header({ userType }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
-        <div className="flex gap-6 md:gap-10">
-          <Link href="/" className="flex items-center space-x-2">
-            <Logo className="h-6 w-6 text-primary" />
-            <span className="inline-block font-bold">AarogyaAI</span>
-          </Link>
-          <div className="hidden md:flex">
-            <NavLinks />
-          </div>
-        </div>
-
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <UserNav userType={userType} />
-          <div className="md:hidden">
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle Menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <Link href="/" className="flex items-center space-x-2 mb-6">
-                    <Logo className="h-6 w-6 text-primary" />
-                    <span className="inline-block font-bold">AarogyaAI</span>
-                </Link>
-                <div className="flex flex-col space-y-4">
-                    <NavLinks className="flex-col space-x-0 space-y-2 items-start" />
-                </div>
-              </SheetContent>
-            </Sheet>
-          </div>
-        </div>
+    <header className="flex h-16 items-center gap-4 border-b bg-background px-4 lg:px-6">
+      <div className="md:hidden">
+        {/* Mobile menu can be added here if needed */}
       </div>
+      <div className="w-full flex-1">
+        <form>
+          <div className="relative">
+            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search..."
+              className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+            />
+          </div>
+        </form>
+      </div>
+       {userType === 'Doctor' && (
+        <div className="hidden md:flex items-center gap-2 text-sm">
+          <Button variant="ghost" className="rounded-full data-[state=active]:bg-green-100 data-[state=active]:text-green-700" data-state="active">Available</Button>
+          <Button variant="ghost" className="rounded-full">Busy</Button>
+          <Button variant="ghost" className="rounded-full">Offline</Button>
+        </div>
+      )}
+      <Button variant="ghost" size="icon" className="rounded-full relative">
+        <Bell className="h-5 w-5" />
+         <Badge className="absolute top-0 right-0 h-5 w-5 justify-center p-0 text-xs">3</Badge>
+        <span className="sr-only">Toggle notifications</span>
+      </Button>
+      <UserNav userType={userType} />
     </header>
   );
 }

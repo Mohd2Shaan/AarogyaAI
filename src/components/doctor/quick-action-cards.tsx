@@ -1,7 +1,11 @@
 import Link from 'next/link';
 import {
-  FileText,
   UserPlus,
+  CalendarPlus,
+  FilePenLine,
+  ClipboardPen,
+  Users,
+  UserPlus2
 } from 'lucide-react';
 import {
   Card,
@@ -10,54 +14,68 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { mockPatients } from '@/lib/mock-data';
+
+const actionCards = [
+    {
+        title: 'Add Patient',
+        description: 'Register new patient',
+        icon: UserPlus,
+        href: '/doctor/add-patient',
+        color: 'bg-blue-500 hover:bg-blue-600',
+    },
+    {
+        title: 'Schedule Appointment',
+        description: 'Book new patient slot',
+        icon: CalendarPlus,
+        href: '/doctor/appointments',
+        color: 'bg-green-500 hover:bg-green-600',
+    },
+    {
+        title: 'Add Prescription',
+        description: 'Create new prescription',
+        icon: FilePenLine,
+        href: '/doctor/prescriptions',
+        color: 'bg-teal-500 hover:bg-teal-600',
+    },
+    {
+        title: 'Patient Notes',
+        description: 'Quick note entry',
+        icon: ClipboardPen,
+        href: '/doctor/notes',
+        color: 'bg-orange-500 hover:bg-orange-600',
+    },
+    {
+        title: 'Connect with Doctor',
+        description: 'View connection requests',
+        icon: Users,
+        href: '/doctor/connections',
+        color: 'bg-purple-500 hover:bg-purple-600',
+    },
+    {
+        title: 'Invite Doctor',
+        description: 'Add team member',
+        icon: UserPlus2,
+        href: '/doctor/invite',
+        color: 'bg-indigo-500 hover:bg-indigo-600',
+    }
+]
 
 export function QuickActionCards() {
   return (
-    <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
-      <Card>
-        <CardHeader className="pb-2">
-          <CardDescription>Appointments Today</CardDescription>
-          <CardTitle className="text-4xl">12</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-xs text-muted-foreground">
-            +5% from yesterday
-          </div>
-        </CardContent>
-      </Card>
-      <Card>
-        <CardHeader className="pb-2">
-          <CardDescription>Active Patients</CardDescription>
-          <CardTitle className="text-4xl">{mockPatients.length}</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="text-xs text-muted-foreground">
-            +2 new this month
-          </div>
-        </CardContent>
-      </Card>
-      <Card className="sm:col-span-2">
-        <CardHeader className="pb-4">
-          <CardDescription>
-            Welcome back, Dr. Smith! You have some pending tasks.
-          </CardDescription>
-          <CardTitle className="text-xl">Quick Actions</CardTitle>
-        </CardHeader>
-        <CardContent className="flex items-center gap-2">
-          <Button asChild size="sm">
-            <Link href="/doctor/add-patient">
-              <UserPlus className="mr-2 h-4 w-4" /> Add Patient
-            </Link>
-          </Button>
-          <Button asChild size="sm" variant="outline">
-            <Link href="/doctor/analyze-report">
-              <FileText className="mr-2 h-4 w-4" /> Analyze Report
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
-    </div>
+    <>
+      {actionCards.map((card) => (
+        <Link href={card.href} key={card.title}>
+            <Card className={`text-white transition-transform transform-gpu hover:scale-105 ${card.color}`}>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-xl font-bold">{card.title}</CardTitle>
+                <card.icon className="h-6 w-6 text-white/80" />
+            </CardHeader>
+            <CardContent>
+                <p className="text-sm text-white/80">{card.description}</p>
+            </CardContent>
+            </Card>
+        </Link>
+      ))}
+    </>
   );
 }
