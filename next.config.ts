@@ -33,9 +33,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  devIndicators: {
-    buildActivity: false,
-  },
   experimental: {
     // removed allowedDevOrigins as it's not a valid Next.js config key
   },
