@@ -44,10 +44,11 @@ export async function chatWithAssistant(input: ChatWithAssistantInput): Promise<
       activities: "30-minute walk"
   };
 
-  // If data were missing from a real database query, we could return a helpful message.
-  // if (!patientHealthProfile || !patientDailySummary) {
-  //   return "I can't seem to access your health data right now. Please make sure you have logged your daily activities.";
-  // }
+  // Conditional Logic: Check if data exists.
+  // In a real app, you would check if the query to Firestore returned any documents.
+  if (!patientHealthProfile || !patientDailySummary) {
+    return "I can't seem to access your health data right now. Please make sure you have logged your daily activities and that your health profile is up to date.";
+  }
 
 
   const system_prompt = `You are AarogyaAI, a friendly, empathetic, and informative health and wellness assistant for a patient named ${patientHealthProfile.name}.
