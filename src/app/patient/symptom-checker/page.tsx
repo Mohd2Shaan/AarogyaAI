@@ -147,7 +147,7 @@ export default function SymptomCheckerPage() {
       </div>
 
       <footer className="mt-8">
-        <Alert variant="destructive">
+        <Alert>
           <AlertCircle className="h-4 w-4" />
           <AlertTitle>Disclaimer</AlertTitle>
           <AlertDescription>
