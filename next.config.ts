@@ -37,7 +37,7 @@ const nextConfig: NextConfig = {
     buildActivity: false,
   },
   experimental: {
-    allowedDevOrigins: ['https://*.cloudworkstations.dev'],
+    // removed allowedDevOrigins as it's not a valid Next.js config key
   },
 };
 

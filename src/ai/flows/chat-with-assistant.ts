@@ -75,13 +75,17 @@ export async function chatWithAssistant(
   5.  **Disclaimer**: You MUST end every single response with the line: "Disclaimer: I am an AI assistant and not a substitute for a real doctor. Please consult with a healthcare professional for any medical concerns."`;
 
   try {
-    const { output } = await ai.generate({
-      system: system_prompt,
-      history: input.history,
-      prompt: input.prompt,
+    const { text } = await ai.generate({
+      model: 'googleai/gemini-2.5-flash',
+      messages: [
+        { role: 'system', content: [{text: system_prompt}] },
+        ...(input.history ?? []),
+        { role: 'user', content: [{text: input.prompt}] },
+      ],
     });
+    
+    const responseText = text();
 
-    const responseText = output?.text;
     if (!responseText) {
       console.error('AI returned an empty response.');
       return "I'm sorry, I seem to be having trouble generating a response. Please try again later.";
