@@ -77,9 +77,8 @@ Keep your tone positive and encouraging. Use simple, easy-to-understand language
 
   try {
     const { output } = await ai.generate({
-      prompt: input.prompt,
-      history: input.history,
       system: system_prompt,
+      history: [...(input.history || []), { role: 'user', parts: [{ text: input.prompt }] }],
     });
 
     const responseText = output?.text;
