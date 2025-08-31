@@ -22,6 +22,14 @@ import('@/ai/flows/symptom-checker').then(module => {
   }
 });
 
+import('@/ai/flows/chat-with-assistant').then(module => {
+  for (const key in module) {
+    if (module[key] instanceof Flow) {
+      flows.push(module[key]);
+    }
+  }
+});
+
 run({
   flows,
 });
