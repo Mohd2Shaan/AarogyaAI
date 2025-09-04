@@ -57,7 +57,7 @@ export function PatientList({ searchTerm }: { searchTerm: string }) {
               <TableHead className="hidden sm:table-cell">
                 Last Appointment
               </TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead className="hidden md:table-cell text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -74,7 +74,10 @@ export function PatientList({ searchTerm }: { searchTerm: string }) {
                         <p className="text-sm font-medium leading-none">
                             {patient.name}
                         </p>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="text-sm text-muted-foreground md:hidden">
+                            {patient.contact}
+                        </p>
+                        <p className="text-sm text-muted-foreground hidden md:block">
                             {patient.contact}
                         </p>
                         </div>
@@ -83,7 +86,7 @@ export function PatientList({ searchTerm }: { searchTerm: string }) {
                     <TableCell className="hidden sm:table-cell">
                     <Badge variant="outline">{patient.lastAppointment}</Badge>
                     </TableCell>
-                    <TableCell className="text-right space-x-2">
+                    <TableCell className="hidden md:table-cell text-right space-x-2">
                      <Button variant="outline" size="icon">
                       <FileText className="h-4 w-4" />
                       <span className="sr-only">View Record</span>

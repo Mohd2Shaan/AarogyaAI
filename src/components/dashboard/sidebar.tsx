@@ -13,15 +13,15 @@ interface NavLink {
   icon: LucideIcon;
 }
 
-interface SidebarProps {
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   navLinks: NavLink[];
 }
 
-export function Sidebar({ navLinks }: SidebarProps) {
+export function Sidebar({ navLinks, className }: SidebarProps) {
   const pathname = usePathname();
 
   return (
-    <div className="hidden border-r bg-background md:block">
+    <div className={cn("border-r bg-background", className)}>
       <div className="flex h-full max-h-screen flex-col gap-2">
         <div className="flex h-16 items-center border-b px-4 lg:px-6">
           <Link href="/" className="flex items-center gap-2 font-semibold">

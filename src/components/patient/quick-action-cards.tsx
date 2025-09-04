@@ -45,15 +45,15 @@ const actionCards = [
 
 export function QuickActionCards() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 gap-4">
       {actionCards.map((card) => (
         <Link href={card.href} key={card.title} className="group">
             <Card className="transform transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg">
-                <CardContent className="flex flex-col items-center justify-center p-6 text-center">
-                    <div className={`p-4 rounded-full mb-4 transition-colors duration-300 ${card.bgColor}`}>
-                        <card.icon className={`h-8 w-8 ${card.color}`} />
+                <CardContent className="flex flex-col items-center justify-center p-4 text-center">
+                    <div className={`p-3 rounded-full mb-3 transition-colors duration-300 ${card.bgColor}`}>
+                        <card.icon className={`h-6 w-6 ${card.color}`} />
                     </div>
-                    <h3 className="font-semibold text-sm">{card.title}</h3>
+                    <h3 className="font-semibold text-xs sm:text-sm">{card.title}</h3>
                 </CardContent>
             </Card>
         </Link>

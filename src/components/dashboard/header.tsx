@@ -17,19 +17,18 @@ interface HeaderProps {
   userType: 'Doctor' | 'Patient';
   searchTerm?: string;
   onSearchChange?: (term: string) => void;
+  mobileNav?: React.ReactNode;
 }
 
 type DoctorStatus = 'Available' | 'Busy' | 'Offline';
 
-export function Header({ userType, searchTerm, onSearchChange }: HeaderProps) {
+export function Header({ userType, searchTerm, onSearchChange, mobileNav }: HeaderProps) {
   const [status, setStatus] = useState<DoctorStatus>('Available');
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
     <header className="flex h-16 items-center gap-4 border-b bg-background px-4 lg:px-6">
-      <div className="md:hidden">
-        {/* Mobile menu can be added here if needed */}
-      </div>
+        {mobileNav}
       <div className="w-full flex-1">
         {userType === 'Patient' ? (
            <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={() => setIsChatOpen(true)}>

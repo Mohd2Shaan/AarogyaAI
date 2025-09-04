@@ -1,3 +1,4 @@
+
 import Link from 'next/link';
 import {
   UserPlus,
@@ -66,7 +67,7 @@ export function QuickActionCards() {
         <Link href={card.href} key={card.title} className="col-span-1">
             <Card className={`text-white transition-transform transform-gpu hover:scale-105 ${card.color}`}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-lg font-bold">{card.title}</CardTitle>
+                <CardTitle className="text-sm font-bold">{card.title}</CardTitle>
                 <card.icon className="h-5 w-5 text-white/80" />
             </CardHeader>
             <CardContent>
