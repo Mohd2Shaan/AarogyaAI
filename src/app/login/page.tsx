@@ -28,30 +28,6 @@ const taglines = [
   },
 ];
 
-function GoogleIcon() {
-  return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-      <path
-        fill="#4285F4"
-        d="M21.35 11.1h-9.1v3.4h5.2c-.2 1.1-.9 2.1-2.1 2.8v2.3h2.9c1.7-1.6 2.7-4 2.7-6.5s-1-4.9-2.6-6.5z"
-      />
-      <path
-        fill="#34A853"
-        d="M12.25 22c2.4 0 4.5-.8 6-2.2l-2.9-2.3c-.8.5-1.9.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8H4.1v2.4c1.3 2.5 4.1 4.2 7.15 4.2z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M7.15 14.7c-.2-.6-.3-1.2-.3-1.8s.1-1.2.3-1.8V8.8H4.1c-.7 1.3-1.1 2.8-1.1 4.4s.4 3.1 1.1 4.4l3.05-2.3z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12.25 6.8c1.3 0 2.5.5 3.4 1.4l2.6-2.6C16.7 3.9 14.6 3 12.25 3 9.2 3 6.4 4.7 5.1 7.2l3.05 2.3c.7-2.2 2.7-3.7 5.1-3.7z"
-      />
-    </svg>
-  );
-}
-
-
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -142,7 +118,24 @@ export default function LoginPage() {
               {isLoading ? 'Logging in...' : 'Login'}
             </Button>
             <Button variant="outline" className="w-full rounded-lg" type="button">
-              <GoogleIcon /> Continue with Google
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+                <path
+                  fill="#4285F4"
+                  d="M21.35 11.1h-9.1v3.4h5.2c-.2 1.1-.9 2.1-2.1 2.8v2.3h2.9c1.7-1.6 2.7-4 2.7-6.5s-1-4.9-2.6-6.5z"
+                />
+                <path
+                  fill="#34A853"
+                  d="M12.25 22c2.4 0 4.5-.8 6-2.2l-2.9-2.3c-.8.5-1.9.9-3.1.9-2.4 0-4.4-1.6-5.1-3.8H4.1v2.4c1.3 2.5 4.1 4.2 7.15 4.2z"
+                />
+                <path
+                  fill="#FBBC05"
+                  d="M7.15 14.7c-.2-.6-.3-1.2-.3-1.8s.1-1.2.3-1.8V8.8H4.1c-.7 1.3-1.1 2.8-1.1 4.4s.4 3.1 1.1 4.4l3.05-2.3z"
+                />
+                <path
+                  fill="#EA4335"
+                  d="M12.25 6.8c1.3 0 2.5.5 3.4 1.4l2.6-2.6C16.7 3.9 14.6 3 12.25 3 9.2 3 6.4 4.7 5.1 7.2l3.05 2.3c.7-2.2 2.7-3.7 5.1-3.7z"
+                />
+              </svg> Continue with Google
             </Button>
           </form>
           <div className="mt-4 text-center text-sm">
