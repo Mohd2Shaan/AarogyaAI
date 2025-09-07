@@ -34,12 +34,10 @@ export default function DoctorLayout({
   children: React.ReactNode;
 }) {
   const [searchTerm, setSearchTerm] = useState('');
-  const pathname = usePathname();
-  const isPatientPage = pathname.startsWith('/doctor/patients');
 
-  // Pass searchTerm to children only if it's the patients page
+  // Pass searchTerm to all children, so any page can use it.
   const childrenWithProps = React.Children.map(children, (child) => {
-    if (React.isValidElement(child) && isPatientPage) {
+    if (React.isValidElement(child)) {
       // @ts-ignore - cloning to pass props
       return React.cloneElement(child, { searchTerm });
     }
@@ -53,7 +51,7 @@ export default function DoctorLayout({
         <Header
           userType="Doctor"
           searchTerm={searchTerm}
-          onSearchChange={isPatientPage ? setSearchTerm : undefined}
+          onSearchChange={setSearchTerm}
           mobileNav={
             <Sheet>
               <SheetTrigger asChild>
