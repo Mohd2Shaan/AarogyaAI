@@ -14,17 +14,24 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { CreditCard, LogOut, Settings, User } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface UserNavProps {
   userType: 'Doctor' | 'Patient';
 }
 
 export function UserNav({ userType }: UserNavProps) {
+  const router = useRouter();
   const isDoctor = userType === 'Doctor';
   const userName = isDoctor ? 'Dr. Aarav' : 'Jane Doe';
   const userEmail = isDoctor ? 'dr.aarav@aarogya.ai' : 'jane.doe@email.com';
   const avatarUrl = isDoctor ? 'https://i.pravatar.cc/150?u=dr.aarav' : 'https://i.pravatar.cc/150?u=jane.doe';
   const avatarFallback = isDoctor ? 'DA' : 'JD';
+
+  const handleLogout = () => {
+    // In a real app, this would call Firebase Auth to sign out.
+    router.push('/login');
+  };
 
 
   return (
@@ -64,11 +71,9 @@ export function UserNav({ userType }: UserNavProps) {
           </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/">
+        <DropdownMenuItem onClick={handleLogout}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Log out</span>
-          </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
