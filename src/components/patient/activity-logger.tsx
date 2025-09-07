@@ -1,12 +1,7 @@
+
 'use client';
 
 import { useState } from 'react';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -15,161 +10,167 @@ import { toast } from '@/hooks/use-toast';
 import {
   Activity,
   Apple,
-  ClipboardList,
+  CheckCircle2,
   Loader2,
   Pill,
 } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '../ui/dialog';
-import { Card, CardContent } from '../ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '../ui/card';
 import { cn } from '@/lib/utils';
+
+type LogStatus = 'pending' | 'saving' | 'saved';
+
+interface LogSectionProps {
+  title: string;
+  icon: React.ElementType;
+  children: React.ReactNode;
+  onLog: () => void;
+  status: LogStatus;
+  logDisabled: boolean;
+}
+
+function LogSection({ title, icon: Icon, children, onLog, status, logDisabled }: LogSectionProps) {
+    const isSaved = status === 'saved';
+    const isSaving = status === 'saving';
+
+    return (
+        <Card className={cn(isSaved && 'bg-muted/50 border-green-200 dark:border-green-800')}>
+            <CardHeader className="flex flex-row items-center justify-between pb-4">
+                <CardTitle className="flex items-center gap-3 text-xl">
+                    <Icon className={cn('h-6 w-6', isSaved ? 'text-green-500' : 'text-primary')} />
+                    {title}
+                </CardTitle>
+                {isSaved && <CheckCircle2 className="h-6 w-6 text-green-500" />}
+            </CardHeader>
+            <CardContent>
+                <div className={cn('space-y-4', isSaved && 'opacity-60')}>
+                    {children}
+                </div>
+                <div className="flex justify-end mt-4">
+                    <Button
+                        onClick={onLog}
+                        disabled={logDisabled || isSaving || isSaved}
+                        size="sm"
+                        variant={isSaved ? 'secondary' : 'default'}
+                    >
+                        {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                        {isSaved ? 'Logged' : isSaving ? 'Logging...' : 'Log'}
+                    </Button>
+                </div>
+            </CardContent>
+        </Card>
+    );
+}
+
 
 export function ActivityLogger() {
   const [medication, setMedication] = useState('');
+  const [medicationStatus, setMedicationStatus] = useState<LogStatus>('pending');
+
   const [breakfast, setBreakfast] = useState('');
   const [lunch, setLunch] = useState('');
   const [dinner, setDinner] = useState('');
+  const [mealsStatus, setMealsStatus] = useState<LogStatus>('pending');
+  
   const [activities, setActivities] = useState('');
-  const [isSaving, setIsSaving] = useState(false);
+  const [activitiesStatus, setActivitiesStatus] = useState<LogStatus>('pending');
 
-  const isSubmittable = [medication, breakfast, lunch, dinner, activities].some(field => field.trim() !== '');
+  const handleLog = (section: 'medication' | 'meals' | 'activities') => {
+    const setters = {
+        medication: setMedicationStatus,
+        meals: setMealsStatus,
+        activities: setActivitiesStatus,
+    };
 
-  const resetForm = () => {
-    setMedication('');
-    setBreakfast('');
-    setLunch('');
-    setDinner('');
-    setActivities('');
-  };
-
-  const handleSave = () => {
-    setIsSaving(true);
+    setters[section]('saving');
     // Simulate saving to a backend
     setTimeout(() => {
+      setters[section]('saved');
       toast({
-        title: 'Log Saved!',
-        description: "Today's activity has been successfully logged.",
+        title: `${section.charAt(0).toUpperCase() + section.slice(1)} Logged!`,
+        description: `Your ${section} have been successfully saved.`,
         className: 'bg-accent text-accent-foreground',
       });
-      // Do not reset form to allow report generation
-      setIsSaving(false);
     }, 1000);
   };
-  
-  const today = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  });
 
   return (
-    <Accordion type="single" collapsible className="w-full" defaultValue="item-1">
-      <AccordionItem value="item-1">
-        <AccordionTrigger className='text-lg font-semibold flex items-center gap-2'>
-            <Pill className='h-5 w-5 text-primary' /> Medication
-        </AccordionTrigger>
-        <AccordionContent className="p-1">
-          <Label htmlFor="medication">Medications Taken Today</Label>
-          <Textarea
-            id="medication"
-            placeholder="e.g., 1x Paracetamol 500mg in the morning, 2x Vitamin D capsules after lunch..."
-            value={medication}
-            onChange={(e) => setMedication(e.target.value)}
-          />
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-2">
-        <AccordionTrigger className='text-lg font-semibold flex items-center gap-2'>
-            <Apple className='h-5 w-5 text-primary' /> Meals
-        </AccordionTrigger>
-        <AccordionContent className="space-y-4 p-1">
-          <div>
-            <Label htmlFor="breakfast">Breakfast</Label>
-            <Input
-              id="breakfast"
-              placeholder="e.g., Oatmeal with fruits"
-              value={breakfast}
-              onChange={(e) => setBreakfast(e.target.value)}
+    <div className="space-y-6">
+        <LogSection
+            title="Medication"
+            icon={Pill}
+            status={medicationStatus}
+            logDisabled={!medication.trim()}
+            onLog={() => handleLog('medication')}
+        >
+            <Label htmlFor="medication" className="sr-only">Medications Taken Today</Label>
+            <Textarea
+                id="medication"
+                placeholder="e.g., 1x Paracetamol 500mg in the morning, 2x Vitamin D capsules after lunch..."
+                value={medication}
+                onChange={(e) => setMedication(e.target.value)}
+                rows={3}
+                disabled={medicationStatus !== 'pending'}
             />
-          </div>
-          <div>
-            <Label htmlFor="lunch">Lunch</Label>
-            <Input
-              id="lunch"
-              placeholder="e.g., Grilled chicken salad"
-              value={lunch}
-              onChange={(e) => setLunch(e.target.value)}
-            />
-          </div>
-          <div>
-            <Label htmlFor="dinner">Dinner</Label>
-            <Input
-              id="dinner"
-              placeholder="e.g., Lentil soup and bread"
-              value={dinner}
-              onChange={(e) => setDinner(e.target.value)}
-            />
-          </div>
-        </AccordionContent>
-      </AccordionItem>
-      <AccordionItem value="item-3">
-        <AccordionTrigger className='text-lg font-semibold flex items-center gap-2'>
-            <Activity className='h-5 w-5 text-primary' /> Physical Activities
-        </AccordionTrigger>
-        <AccordionContent className="p-1">
-          <Label htmlFor="activities">Activities performed today</Label>
-          <Textarea
-            id="activities"
-            placeholder="e.g., 30-minute walk in the park, 15 minutes of stretching..."
-            value={activities}
-            onChange={(e) => setActivities(e.target.value)}
-          />
-        </AccordionContent>
-      </AccordionItem>
-      <div className="flex justify-end gap-2 mt-6">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button variant="outline" disabled={!isSubmittable}>
-              <ClipboardList className="mr-2 h-4 w-4" /> Generate Report
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[625px]">
-            <DialogHeader>
-              <DialogTitle>Daily Activity Report for {today}</DialogTitle>
-            </DialogHeader>
-            <Card>
-              <CardContent className="p-6 space-y-4 text-sm">
+        </LogSection>
+
+        <LogSection
+            title="Meals"
+            icon={Apple}
+            status={mealsStatus}
+            logDisabled={!breakfast.trim() && !lunch.trim() && !dinner.trim()}
+            onLog={() => handleLog('meals')}
+        >
+             <div className="space-y-4">
                 <div>
-                  <h4 className="font-semibold mb-2">Medication</h4>
-                  <p className="text-muted-foreground">{medication || 'No medication logged.'}</p>
+                    <Label htmlFor="breakfast">Breakfast</Label>
+                    <Input
+                    id="breakfast"
+                    placeholder="e.g., Oatmeal with fruits"
+                    value={breakfast}
+                    onChange={(e) => setBreakfast(e.target.value)}
+                    disabled={mealsStatus !== 'pending'}
+                    />
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Meals</h4>
-                  <ul className="list-disc list-inside text-muted-foreground space-y-1">
-                    <li><strong>Breakfast:</strong> {breakfast || 'Not logged.'}</li>
-                    <li><strong>Lunch:</strong> {lunch || 'Not logged.'}</li>
-                    <li><strong>Dinner:</strong> {dinner || 'Not logged.'}</li>
-                  </ul>
+                    <Label htmlFor="lunch">Lunch</Label>
+                    <Input
+                    id="lunch"
+                    placeholder="e.g., Grilled chicken salad"
+                    value={lunch}
+                    onChange={(e) => setLunch(e.target.value)}
+                    disabled={mealsStatus !== 'pending'}
+                    />
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">Physical Activities</h4>
-                  <p className="text-muted-foreground">{activities || 'No activities logged.'}</p>
+                    <Label htmlFor="dinner">Dinner</Label>
+                    <Input
+                    id="dinner"
+                    placeholder="e.g., Lentil soup and bread"
+                    value={dinner}
+                    onChange={(e) => setDinner(e.target.value)}
+                    disabled={mealsStatus !== 'pending'}
+                    />
                 </div>
-              </CardContent>
-            </Card>
-          </DialogContent>
-        </Dialog>
-        <Button onClick={handleSave} disabled={!isSubmittable || isSaving} className={cn(!isSubmittable && "bg-muted-foreground hover:bg-muted-foreground/90")}>
-          {isSaving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-          Save Log
-        </Button>
-      </div>
-    </Accordion>
+            </div>
+        </LogSection>
+
+        <LogSection
+            title="Physical Activities"
+            icon={Activity}
+            status={activitiesStatus}
+            logDisabled={!activities.trim()}
+            onLog={() => handleLog('activities')}
+        >
+            <Label htmlFor="activities" className="sr-only">Activities performed today</Label>
+            <Textarea
+                id="activities"
+                placeholder="e.g., 30-minute walk in the park, 15 minutes of stretching..."
+                value={activities}
+                onChange={(e) => setActivities(e.target.value)}
+                rows={3}
+                disabled={activitiesStatus !== 'pending'}
+            />
+        </LogSection>
+    </div>
   );
 }
