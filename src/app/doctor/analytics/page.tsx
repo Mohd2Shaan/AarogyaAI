@@ -55,8 +55,10 @@ const initialAppointmentTrendsData = [
 
 export default function AnalyticsPage() {
   const [appointmentTrendsData, setAppointmentTrendsData] = useState(initialAppointmentTrendsData);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     // Generate data on client-side to avoid hydration mismatch
     setAppointmentTrendsData([
       { month: 'Jan', total: Math.floor(Math.random() * 50) + 100 },
@@ -100,7 +102,7 @@ export default function AnalyticsPage() {
         </CardHeader>
         <CardContent className="pl-2">
           <ResponsiveContainer width="100%" height={350}>
-            {appointmentTrendsData[0].total > 0 ? (
+            {isClient ? (
               <BarChart data={appointmentTrendsData}>
                 <XAxis 
                   dataKey="month"
