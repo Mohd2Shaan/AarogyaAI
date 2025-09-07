@@ -10,9 +10,9 @@ import {
 import { PatientDashboardSkeleton } from '@/components/skeletons';
 import { UpcomingAppointmentsClient } from '@/components/patient/upcoming-appointments-client';
 import { QuickActionCards } from '@/components/patient/quick-action-cards';
-import { PatientActivityClient } from '@/components/patient/patient-activity-client';
 import { AiChatAssistantClient } from '@/components/patient/ai-chat-assistant-client';
 import { User, Stethoscope } from 'lucide-react';
+import { MedicineSchedule } from '@/components/doctor/medicine-schedule';
 
 export default function PatientDashboard() {
   // Mock data for personalization
@@ -45,14 +45,14 @@ export default function PatientDashboard() {
         <div className="grid auto-rows-max items-start gap-8 lg:col-span-2">
           <Card>
             <CardHeader>
-              <CardTitle>Daily Activity Log</CardTitle>
+              <CardTitle>Today's Medication</CardTitle>
               <CardDescription>
-                Keep a record of your daily medications, meals, and activities.
+                Track and log your daily medication schedule.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Suspense fallback={<PatientDashboardSkeleton />}>
-                <PatientActivityClient />
+                <MedicineSchedule isPatientView={true} />
               </Suspense>
             </CardContent>
           </Card>

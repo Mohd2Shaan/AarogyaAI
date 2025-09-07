@@ -4,14 +4,13 @@
 import { useEffect, useState } from 'react';
 import { useParams, notFound } from 'next/navigation';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Cake, FileText, Phone, User as UserIcon } from 'lucide-react';
+import { Cake, Phone, User as UserIcon } from 'lucide-react';
 import { usePatientStore } from '@/lib/store';
 import type { Patient } from '@/lib/types';
 import { DoctorDashboardSkeleton } from '@/components/skeletons';
-import { AnalyzeReportClient } from '@/components/doctor/analyze-report-client';
 import { PatientReportManager } from '@/components/doctor/patient-report-manager';
-import { Separator } from '@/components/ui/separator';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { MedicineSchedule } from '@/components/doctor/medicine-schedule';
 
 export default function PatientProfilePage() {
   const params = useParams();
@@ -82,26 +81,18 @@ export default function PatientProfilePage() {
         </div>
       </div>
 
-      <div className="grid gap-8 lg:grid-cols-2">
-        <div className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <FileText /> AI Report Analysis
-              </CardTitle>
-              <CardDescription>
-                Upload a medical report for this patient to get AI-powered insights.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <AnalyzeReportClient />
-            </CardContent>
-          </Card>
-        </div>
-        <div className="space-y-8">
-          <PatientReportManager patientId={patient.id} />
-        </div>
-      </div>
+      <Tabs defaultValue="schedule" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="schedule">Medicine Schedule</TabsTrigger>
+          <TabsTrigger value="reports">Clinical Reports</TabsTrigger>
+        </TabsList>
+        <TabsContent value="schedule">
+            <MedicineSchedule />
+        </TabsContent>
+        <TabsContent value="reports">
+            <PatientReportManager patientId={patient.id} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

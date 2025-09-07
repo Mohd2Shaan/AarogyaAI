@@ -1,5 +1,5 @@
 
-import type { Patient, Appointment, Conversation, ChatMessage, ConnectionRequest, Specialist } from './types';
+import type { Patient, Appointment, Conversation, ChatMessage, ConnectionRequest, Specialist, Medicine } from './types';
 
 export const mockPatients: Patient[] = [
   {
@@ -224,4 +224,39 @@ export const mockSpecialists: Specialist[] = [
     avatar: 'https://i.pravatar.cc/150?u=dr.james.wilson',
     status: 'Busy',
   },
+];
+
+export const mockMedicineSchedule: Medicine[] = [
+    {
+        id: 'med1',
+        medicineName: 'Metformin',
+        dosage: '1 tablet (500mg)',
+        timing: 'Morning',
+        relationToMeal: 'After Breakfast',
+        status: true,
+    },
+    {
+        id: 'med2',
+        medicineName: 'Lisinopril',
+        dosage: '1 tablet (10mg)',
+        timing: 'Morning',
+        relationToMeal: 'Anytime',
+        status: false,
+    },
+    {
+        id: 'med3',
+        medicineName: 'Atorvastatin',
+        dosage: '1 tablet (20mg)',
+        timing: 'Evening',
+        relationToMeal: 'After Dinner',
+        status: false,
+    },
+    {
+        id: 'med4',
+        medicineName: 'Vitamin D',
+        dosage: '1 capsule',
+        timing: 'Afternoon',
+        relationToMeal: 'After Lunch',
+        status: true,
+    },
 ];

@@ -1,3 +1,4 @@
+
 export interface Patient {
   id: string;
   name: string;
@@ -20,17 +21,15 @@ export interface Appointment {
   status: 'Upcoming' | 'Completed' | 'Cancelled' | 'Pending' | 'Confirmed';
 }
 
-export interface ActivityLog {
-  id: string;
-  date: Date;
-  medication: string;
-  meals: {
-    breakfast: string;
-    lunch: string;
-    dinner: string;
-  };
-  activities: string;
+export interface Medicine {
+    id: string;
+    medicineName: string;
+    dosage: string;
+    timing: 'Morning' | 'Afternoon' | 'Evening';
+    relationToMeal: string;
+    status: boolean;
 }
+
 
 export interface ChatMessage {
   id: string;
