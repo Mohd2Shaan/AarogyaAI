@@ -23,33 +23,9 @@ interface AiComplianceAssistantProps {
 
 function ComplianceScoreIndicator({ score }: { score: number }) {
   return (
-    <div className="relative h-32 w-32">
-      <svg className="h-full w-full" viewBox="0 0 36 36">
-        <path
-          className="text-muted/50"
-          d="M18 2.0845
-             a 15.9155 15.9155 0 0 1 0 31.831
-             a 15.9155 15.9155 0 0 1 0 -31.831"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="3"
-        />
-        <path
-          className="text-primary"
-          stroke="currentColor"
-          strokeWidth="3"
-          strokeDasharray={`${score}, 100`}
-          d="M18 2.0845
-             a 15.9155 15.9155 0 0 1 0 31.831
-             a 15.9155 15.9155 0 0 1 0 -31.831"
-          fill="none"
-          strokeLinecap="round"
-        />
-      </svg>
-      <div className="absolute inset-0 flex flex-col items-center justify-center">
-        <span className="text-3xl font-bold text-primary">{score}</span>
-        <span className="text-sm text-muted-foreground">Score</span>
-      </div>
+    <div className="flex flex-col items-center gap-2">
+        <div className="text-4xl font-bold text-primary">{score}/100</div>
+        <Progress value={score} className="h-2 w-full" />
     </div>
   );
 }
@@ -93,9 +69,9 @@ export function AiComplianceAssistant({ patientId }: AiComplianceAssistantProps)
           </div>
         ) : analysis ? (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="flex flex-col items-center justify-center md:col-span-1">
+            <div className="flex flex-col justify-center md:col-span-1 space-y-2">
+               <h4 className="text-center font-semibold text-muted-foreground">Overall Compliance Score</h4>
               <ComplianceScoreIndicator score={analysis.overallComplianceScore} />
-              <p className="text-center text-muted-foreground mt-2 text-sm">Overall Compliance</p>
             </div>
             <div className="md:col-span-2 space-y-4">
               <div className="space-y-2">
