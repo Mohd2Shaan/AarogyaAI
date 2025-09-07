@@ -1,3 +1,4 @@
+
 'use client';
 
 import {
@@ -16,25 +17,106 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import { mockAppointments } from '@/lib/mock-data';
+import { mockAppointments, mockPatients } from '@/lib/mock-data';
 import type { Appointment } from '@/lib/types';
-import { useMemo } from 'react';
-import { FileText } from 'lucide-react';
+import { useMemo, useState, useEffect } from 'react';
+import { FileText, User, Cake, Phone, Stethoscope } from 'lucide-react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { usePatientStore } from '@/lib/store';
+import { PatientDashboardSkeleton } from '@/components/skeletons';
 
 export default function RecordsPage() {
+  const [isLoading, setIsLoading] = useState(true);
+  const { patients } = usePatientStore();
+  // For this demo, we'll just display the first patient's data.
+  // In a real app, you'd get the logged-in patient's ID.
+  const patient = patients[0];
+
+   useEffect(() => {
+    if (patient) {
+      setIsLoading(false);
+    }
+  }, [patient]);
+
+
   const appointmentHistory = useMemo(
     () => mockAppointments.filter((appt) => appt.status === 'Completed'),
     []
   );
 
+  if (isLoading) {
+    return <PatientDashboardSkeleton />;
+  }
+
+  if (!patient) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>No Patient Data</CardTitle>
+            </CardHeader>
+            <CardContent>
+                <p>Could not find patient information.</p>
+            </CardContent>
+        </Card>
+    )
+  }
+
+   const calculateAge = (dob: string) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+
   return (
-    <div className="container mx-auto">
-      <div className="mb-8">
+    <div className="container mx-auto space-y-8">
+      <div>
         <h1 className="text-3xl font-bold tracking-tight">My Medical Records</h1>
         <p className="text-muted-foreground">
-          View your past appointment history and medical records.
+          View your profile and past appointment history.
         </p>
       </div>
+
+       <Card>
+        <CardHeader>
+            <CardTitle>My Profile</CardTitle>
+        </CardHeader>
+        <CardContent className="flex flex-col md:flex-row items-center gap-8">
+             <Avatar className="h-24 w-24 border-4 border-primary">
+                <AvatarImage src={patient.avatar} alt={patient.name} />
+                <AvatarFallback className="text-3xl">
+                {patient.name
+                    .split(' ')
+                    .map((n) => n[0])
+                    .join('')}
+                </AvatarFallback>
+            </Avatar>
+            <div className="grid grid-cols-2 gap-x-8 gap-y-4">
+                 <div className="flex items-center gap-2">
+                    <User className="h-5 w-5 text-muted-foreground" />
+                    <span>{patient.name}</span>
+                </div>
+                 <div className="flex items-center gap-2">
+                    <Cake className="h-5 w-5 text-muted-foreground" />
+                    <span>{calculateAge(patient.dob)} years old</span>
+                </div>
+                 <div className="flex items-center gap-2">
+                    <Phone className="h-5 w-5 text-muted-foreground" />
+                    <span>{patient.contact}</span>
+                </div>
+                 <div className="flex items-center gap-2">
+                    <Stethoscope className="h-5 w-5 text-muted-foreground" />
+                    <span>Doctor: Dr. Aarav Malhotra</span>
+                </div>
+            </div>
+        </CardContent>
+       </Card>
+
 
       <Card>
         <CardHeader>

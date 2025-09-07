@@ -1,0 +1,97 @@
+
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useParams, notFound } from 'next/navigation';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Briefcase, Cake, Calendar, FileText, Mail, Phone, User as UserIcon } from 'lucide-react';
+import { usePatientStore } from '@/lib/store';
+import type { Patient } from '@/lib/types';
+import { DoctorDashboardSkeleton } from '@/components/skeletons';
+import { AnalyzeReportClient } from '@/components/doctor/analyze-report-client';
+
+export default function PatientProfilePage() {
+  const params = useParams();
+  const { getPatientById } = usePatientStore();
+  const [patient, setPatient] = useState<Patient | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const patientId = params.id as string;
+    if (patientId) {
+      const foundPatient = getPatientById(patientId);
+      setPatient(foundPatient);
+    }
+    setIsLoading(false);
+  }, [params.id, getPatientById]);
+
+  if (isLoading) {
+    return <DoctorDashboardSkeleton />;
+  }
+
+  if (!patient) {
+    notFound();
+    return null;
+  }
+
+  const calculateAge = (dob: string) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const m = today.getMonth() - birthDate.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  return (
+    <div className="container mx-auto">
+        <div className="flex flex-col md:flex-row items-start gap-8 mb-8">
+            <Avatar className="h-32 w-32 border-4 border-primary">
+                <AvatarImage src={patient.avatar} alt={patient.name} />
+                <AvatarFallback className="text-4xl">
+                {patient.name
+                    .split(' ')
+                    .map((n) => n[0])
+                    .join('')}
+                </AvatarFallback>
+            </Avatar>
+            <div className="flex-grow">
+                <h1 className="text-4xl font-bold tracking-tight">{patient.name}</h1>
+                <p className="text-muted-foreground text-lg">Patient ID: {patient.id}</p>
+                 <div className="mt-4 flex flex-wrap gap-x-6 gap-y-2 text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                        <Cake className="h-5 w-5" />
+                        <span>{patient.dob} ({calculateAge(patient.dob)} years old)</span>
+                    </div>
+                     <div className="flex items-center gap-2">
+                        <UserIcon className="h-5 w-5" />
+                        <span>{patient.gender}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                        <Phone className="h-5 w-5" />
+                        <span>{patient.contact}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div className="grid gap-8 lg:grid-cols-3">
+            <div className="lg:col-span-3">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="flex items-center gap-2"><FileText/> AI Report Analysis</CardTitle>
+                        <CardDescription>Upload a medical report for this patient to get AI-powered insights.</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                        <AnalyzeReportClient />
+                    </CardContent>
+                </Card>
+            </div>
+        </div>
+    </div>
+  );
+}

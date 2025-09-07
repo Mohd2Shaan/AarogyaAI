@@ -37,7 +37,7 @@ export default function DoctorLayout({
 }) {
   const [searchTerm, setSearchTerm] = useState('');
   const pathname = usePathname();
-  const isPatientPage = pathname === '/doctor/patients';
+  const isPatientPage = pathname.startsWith('/doctor/patients');
 
   // Pass searchTerm to children only if it's the patients page
   const childrenWithProps = React.Children.map(children, (child) => {

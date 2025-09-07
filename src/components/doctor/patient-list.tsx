@@ -2,6 +2,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 import {
   Table,
   TableBody,
@@ -20,10 +21,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Phone, Video, FileText } from 'lucide-react';
-import { mockPatients } from '@/lib/mock-data';
+import { Phone, Video, FileText, UserPlus } from 'lucide-react';
 import type { Patient } from '@/lib/types';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { usePatientStore } from '@/lib/store';
 
 const CallSimulationDialog = dynamic(() => import('../shared/call-simulation').then(mod => mod.CallSimulationDialog), {
     loading: () => <Button variant="outline" size="icon" disabled><Video className="h-4 w-4" /></Button>,
@@ -31,23 +32,51 @@ const CallSimulationDialog = dynamic(() => import('../shared/call-simulation').t
 });
 
 export function PatientList({ searchTerm }: { searchTerm: string }) {
+  const { patients } = usePatientStore();
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const filteredPatients = useMemo(() => {
     if (!searchTerm) {
-      return mockPatients;
+      return patients;
     }
-    return mockPatients.filter((patient) =>
+    return patients.filter((patient) =>
       patient.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
-  }, [searchTerm]);
+  }, [searchTerm, patients]);
+
+  if (!isClient) {
+    return (
+        <Card>
+            <CardHeader>
+                <CardTitle>Current Patients</CardTitle>
+                <CardDescription>Loading patient data...</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <div className="text-center p-8">Loading...</div>
+            </CardContent>
+        </Card>
+    );
+  }
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Current Patients</CardTitle>
-        <CardDescription>
-          A list of all patients currently under your care.
-        </CardDescription>
+      <CardHeader className="flex flex-row items-center justify-between">
+        <div>
+            <CardTitle>Current Patients</CardTitle>
+            <CardDescription>
+            A list of all patients currently under your care.
+            </CardDescription>
+        </div>
+        <Button asChild>
+            <Link href="/doctor/add-patient">
+                <UserPlus className="mr-2 h-4 w-4"/>
+                Add Patient
+            </Link>
+        </Button>
       </CardHeader>
       <CardContent>
         <Table>
@@ -57,7 +86,7 @@ export function PatientList({ searchTerm }: { searchTerm: string }) {
               <TableHead className="hidden sm:table-cell">
                 Last Appointment
               </TableHead>
-              <TableHead className="hidden md:table-cell text-right">Actions</TableHead>
+              <TableHead className="text-right">Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -86,10 +115,12 @@ export function PatientList({ searchTerm }: { searchTerm: string }) {
                     <TableCell className="hidden sm:table-cell">
                     <Badge variant="outline">{patient.lastAppointment}</Badge>
                     </TableCell>
-                    <TableCell className="hidden md:table-cell text-right space-x-2">
-                     <Button variant="outline" size="icon">
-                      <FileText className="h-4 w-4" />
-                      <span className="sr-only">View Record</span>
+                    <TableCell className="text-right space-x-2">
+                     <Button variant="outline" size="icon" asChild>
+                      <Link href={`/doctor/patients/${patient.id}`}>
+                        <FileText className="h-4 w-4" />
+                        <span className="sr-only">View Record</span>
+                      </Link>
                     </Button>
                     <CallSimulationDialog
                         patientName={patient.name}
@@ -115,7 +146,7 @@ export function PatientList({ searchTerm }: { searchTerm: string }) {
             ) : (
                 <TableRow>
                     <TableCell colSpan={3} className="h-24 text-center">
-                        No patients found matching your search.
+                        No patients found.
                     </TableCell>
                 </TableRow>
             )}

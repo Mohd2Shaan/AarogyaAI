@@ -1,3 +1,4 @@
+
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -5,12 +6,12 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import {
   CalendarIcon,
-  ChevronsUpDown,
   FileUp,
   Loader2,
   UploadCloud,
 } from 'lucide-react';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 import {
   Accordion,
@@ -44,6 +45,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { Calendar } from '../ui/calendar';
 import { format } from 'date-fns';
 import { Card, CardContent } from '../ui/card';
+import { usePatientStore } from '@/lib/store';
 
 const formSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters.'),
@@ -64,6 +66,8 @@ export function AddPatientForm() {
   const [reportFile, setReportFile] = useState<File | null>(null);
   const [isExtracting, setIsExtracting] = useState(false);
   const [extractedInfo, setExtractedInfo] = useState('');
+  const router = useRouter();
+  const { addPatient } = usePatientStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -81,20 +85,35 @@ export function AddPatientForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
-      logAuditEvent('PATIENT_CREATE', 'doctor', { patientName: `${values.firstName} ${values.lastName}` });
-      toast({
-        title: 'Patient Added Successfully!',
-        description: `${values.firstName} ${values.lastName} has been added to your records.`,
-        variant: 'default',
-        className: 'bg-accent text-accent-foreground',
-      });
-      form.reset();
-      setReportFile(null);
-      setExtractedInfo('');
-      setIsSubmitting(false);
-    }, 1500);
+
+    const newPatient = {
+      id: `p${Date.now()}`,
+      name: `${values.firstName} ${values.lastName}`,
+      dob: format(values.dob, 'yyyy-MM-dd'),
+      gender: values.gender,
+      contact: values.phone,
+      avatar: `https://i.pravatar.cc/150?u=${values.email}`,
+      lastAppointment: 'N/A',
+    };
+    
+    addPatient(newPatient);
+    
+    logAuditEvent('PATIENT_CREATE', 'doctor', { patientName: newPatient.name });
+    
+    toast({
+      title: 'Patient Added Successfully!',
+      description: `${newPatient.name} has been added to your records.`,
+      variant: 'default',
+      className: 'bg-accent text-accent-foreground',
+    });
+
+    // Navigate to the new patient's profile page
+    router.push(`/doctor/patients/${newPatient.id}`);
+
+    form.reset();
+    setReportFile(null);
+    setExtractedInfo('');
+    setIsSubmitting(false);
   }
 
   function handleFileChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -229,7 +248,7 @@ export function AddPatientForm() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="patient@email.com" {...field} />
+                      <Input placeholder="patient@email.com" {...field} type="email"/>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -351,9 +370,9 @@ export function AddPatientForm() {
         </Accordion>
         
         <div className="flex justify-end">
-          <Button type="submit" disabled={isSubmitting} className="bg-accent hover:bg-accent/90">
+          <Button type="submit" disabled={isSubmitting}>
             {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isSubmitting ? 'Saving...' : 'Add Patient'}
+            {isSubmitting ? 'Saving...' : 'Add Patient & View Profile'}
           </Button>
         </div>
       </form>
