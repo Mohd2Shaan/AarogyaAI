@@ -9,9 +9,10 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2 } from 'lucide-react';
+import { Loader2, User, Stethoscope } from 'lucide-react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { Switch } from '@/components/ui/switch';
 
 const taglines = [
   {
@@ -32,6 +33,7 @@ export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [role, setRole] = useState<'patient' | 'doctor'>('patient');
   const router = useRouter();
   const { toast } = useToast();
   const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0);
@@ -64,8 +66,10 @@ export default function LoginPage() {
         description: 'Redirecting to your dashboard...',
         className: 'bg-primary text-primary-foreground',
       });
-      // Default to patient dashboard for this redesigned page
-      router.push('/patient/dashboard');
+      
+      const destination = role === 'doctor' ? '/doctor/dashboard' : '/patient/dashboard';
+      router.push(destination);
+
     }, 1500);
   };
 
@@ -80,6 +84,26 @@ export default function LoginPage() {
             </p>
           </div>
           <form onSubmit={handleLogin} className="grid gap-4">
+            <div className="grid gap-2">
+                <Label>Select your role</Label>
+                <div className='flex items-center justify-center gap-4 p-2 bg-muted rounded-lg'>
+                    <div className='flex items-center gap-2'>
+                        <User className={cn("h-5 w-5", role === 'patient' ? 'text-primary' : 'text-muted-foreground')} />
+                        <span className={cn("font-medium", role === 'patient' ? 'text-primary' : 'text-muted-foreground')}>Patient</span>
+                    </div>
+                    <Switch 
+                        checked={role === 'doctor'}
+                        onCheckedChange={(checked) => setRole(checked ? 'doctor' : 'patient')}
+                        id="role-switch"
+                        aria-label="Switch between patient and doctor login"
+                    />
+                    <div className='flex items-center gap-2'>
+                        <Stethoscope className={cn("h-5 w-5", role === 'doctor' ? 'text-primary' : 'text-muted-foreground')} />
+                         <span className={cn("font-medium", role === 'doctor' ? 'text-primary' : 'text-muted-foreground')}>Doctor</span>
+                    </div>
+                </div>
+            </div>
+
             <div className="grid gap-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -118,7 +142,7 @@ export default function LoginPage() {
               {isLoading ? 'Logging in...' : 'Login'}
             </Button>
             <Button variant="outline" className="w-full rounded-lg" type="button">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" className="mr-2">
                 <path
                   fill="#4285F4"
                   d="M21.35 11.1h-9.1v3.4h5.2c-.2 1.1-.9 2.1-2.1 2.8v2.3h2.9c1.7-1.6 2.7-4 2.7-6.5s-1-4.9-2.6-6.5z"
@@ -177,3 +201,5 @@ export default function LoginPage() {
     </div>
   );
 }
+
+    
