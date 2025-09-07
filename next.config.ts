@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -26,15 +27,12 @@ const nextConfig: NextConfig = {
         pathname: '/**',
       },
        {
-        protocol: 'https',
+        protocol: 'https,
         hostname: 'i.pravatar.cc',
         port: '',
         pathname: '/**',
       },
     ],
-  },
-  experimental: {
-    // removed allowedDevOrigins as it's not a valid Next.js config key
   },
 };
 
