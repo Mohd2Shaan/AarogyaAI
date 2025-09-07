@@ -8,7 +8,6 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { PatientDashboardSkeleton } from '@/components/skeletons';
-import { UpcomingAppointmentsClient } from '@/components/patient/upcoming-appointments-client';
 import { QuickActionCards } from '@/components/patient/quick-action-cards';
 import { AiChatAssistantClient } from '@/components/patient/ai-chat-assistant-client';
 import { User, Stethoscope } from 'lucide-react';
@@ -70,9 +69,6 @@ export default function PatientDashboard() {
         </div>
 
         <div className="grid auto-rows-max items-start gap-8">
-          <Suspense fallback={<PatientDashboardSkeleton />}>
-            <UpcomingAppointmentsClient />
-          </Suspense>
           <AiChatAssistantClient />
         </div>
       </div>
