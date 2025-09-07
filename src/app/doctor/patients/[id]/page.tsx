@@ -52,7 +52,7 @@ export default function PatientProfilePage() {
   return (
     <div className="container mx-auto space-y-8">
       <div className="flex flex-col md:flex-row items-start gap-8">
-        <Avatar className="h-32 w-32 border-4 border-primary">
+        <Avatar className="h-32 w-32 border-4 border-primary shadow-md">
           <AvatarImage src={patient.avatar} alt={patient.name} />
           <AvatarFallback className="text-4xl">
             {patient.name

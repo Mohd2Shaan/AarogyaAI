@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default function WelcomePage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-secondary/20 p-8">
+    <div className="flex min-h-screen items-center justify-center bg-background p-8">
       <div className="mx-auto grid max-w-screen-xl gap-8 lg:grid-cols-12">
         <div className="mr-auto place-self-center lg:col-span-7">
           <div className="flex items-center gap-3 mb-4">
@@ -39,7 +39,7 @@ export default function WelcomePage() {
             alt="Healthcare professionals"
             width={600}
             height={800}
-            className="rounded-lg object-cover shadow-2xl"
+            className="rounded-2xl object-cover shadow-2xl"
             data-ai-hint="healthcare professional"
           />
         </div>

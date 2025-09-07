@@ -27,11 +27,11 @@ export function Header({ userType, searchTerm, onSearchChange, mobileNav }: Head
   const [isChatOpen, setIsChatOpen] = useState(false);
 
   return (
-    <header className="flex h-16 items-center gap-4 border-b bg-background px-4 lg:px-6">
+    <header className="flex h-16 items-center gap-4 border-b bg-card px-4 lg:px-6 sticky top-0 z-30">
         {mobileNav}
       <div className="w-full flex-1">
         {userType === 'Patient' ? (
-           <Button variant="outline" className="w-full justify-start text-muted-foreground" onClick={() => setIsChatOpen(true)}>
+           <Button variant="outline" className="w-full justify-start text-muted-foreground rounded-full" onClick={() => setIsChatOpen(true)}>
             <Sparkles className="mr-2 h-4 w-4 text-primary" />
             Ask me about your health profile, daily routine...
           </Button>
@@ -42,7 +42,7 @@ export function Header({ userType, searchTerm, onSearchChange, mobileNav }: Head
               <Input
                 type="search"
                 placeholder={onSearchChange ? 'Search patients...' : 'Search...'}
-                className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3"
+                className="w-full appearance-none bg-background pl-8 shadow-none md:w-2/3 lg:w-1/3 rounded-full"
                 value={searchTerm}
                 onChange={(e) => onSearchChange?.(e.target.value)}
                 disabled={!onSearchChange}
@@ -55,7 +55,7 @@ export function Header({ userType, searchTerm, onSearchChange, mobileNav }: Head
         <div className="hidden md:flex items-center gap-2 text-sm">
           <Button
             variant="ghost"
-            className="rounded-full data-[state=active]:bg-green-100 data-[state=active]:text-green-700"
+            className="rounded-full data-[state=active]:bg-green-100 data-[state=active]:text-green-700 dark:data-[state=active]:bg-green-900/50 dark:data-[state=active]:text-green-300"
             data-state={status === 'Available' ? 'active' : 'inactive'}
             onClick={() => setStatus('Available')}
           >
@@ -63,7 +63,7 @@ export function Header({ userType, searchTerm, onSearchChange, mobileNav }: Head
           </Button>
           <Button
             variant="ghost"
-            className="rounded-full data-[state=active]:bg-yellow-100 data-[state=active]:text-yellow-800"
+            className="rounded-full data-[state=active]:bg-yellow-100 data-[state=active]:text-yellow-800 dark:data-[state=active]:bg-yellow-900/50 dark:data-[state=active]:text-yellow-300"
             data-state={status === 'Busy' ? 'active' : 'inactive'}
             onClick={() => setStatus('Busy')}
           >
@@ -71,7 +71,7 @@ export function Header({ userType, searchTerm, onSearchChange, mobileNav }: Head
           </Button>
           <Button
             variant="ghost"
-            className="rounded-full data-[state=active]:bg-red-100 data-[state=active]:text-red-700"
+            className="rounded-full data-[state=active]:bg-red-100 data-[state=active]:text-red-700 dark:data-[state=active]:bg-red-900/50 dark:data-[state=active]:text-red-300"
             data-state={status === 'Offline' ? 'active' : 'inactive'}
             onClick={() => setStatus('Offline')}
           >
@@ -81,7 +81,7 @@ export function Header({ userType, searchTerm, onSearchChange, mobileNav }: Head
       )}
       <Button variant="ghost" size="icon" className="rounded-full relative">
         <Bell className="h-5 w-5" />
-        <Badge className="absolute top-0 right-0 h-5 w-5 justify-center p-0 text-xs">3</Badge>
+        <Badge className="absolute -top-1 -right-1 h-5 w-5 justify-center p-0 text-xs">3</Badge>
         <span className="sr-only">Toggle notifications</span>
       </Button>
       <UserNav userType={userType} />

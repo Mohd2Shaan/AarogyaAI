@@ -45,7 +45,7 @@ export default function LoginPage() {
       toast({
         title: 'Login Successful',
         description: 'Redirecting to your dashboard...',
-        className: 'bg-accent text-accent-foreground',
+        className: 'bg-primary text-primary-foreground',
       });
 
       if (role === 'doctor') {
@@ -57,8 +57,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-secondary/40">
-      <Card className="mx-auto max-w-sm">
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <Card className="mx-auto max-w-sm shadow-xl">
         <CardHeader>
           <div className="flex items-center justify-center gap-2 mb-2">
             <ModernLogo className="h-8 w-8 text-primary" />

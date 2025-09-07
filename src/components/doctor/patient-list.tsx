@@ -91,11 +91,11 @@ export function PatientList({ searchTerm }: { searchTerm: string }) {
           </TableHeader>
           <TableBody>
             {filteredPatients.length > 0 ? (
-                filteredPatients.map((patient: Patient) => (
-                <TableRow key={patient.id}>
+                filteredPatients.map((patient: Patient, index: number) => (
+                <TableRow key={patient.id} className={index % 2 === 0 ? 'bg-muted/50' : ''}>
                     <TableCell>
                     <div className="flex items-center gap-4">
-                        <Avatar className="hidden h-9 w-9 sm:flex">
+                        <Avatar className="hidden h-9 w-9 sm:flex border">
                         <AvatarImage src={patient.avatar} alt="Avatar" />
                         <AvatarFallback>{patient.name.charAt(0)}</AvatarFallback>
                         </Avatar>
