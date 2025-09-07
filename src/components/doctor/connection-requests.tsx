@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Table,
@@ -23,6 +24,12 @@ export function ConnectionRequests() {
   const [requests, setRequests] = useState<ConnectionRequest[]>(
     mockConnectionRequests
   );
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
 
   const handleRequest = (id: string, status: 'accepted' | 'declined') => {
     const updatedRequests = requests.map((req) =>
@@ -65,9 +72,9 @@ export function ConnectionRequests() {
                   </div>
                 </TableCell>
                 <TableCell>
-                  {formatDistanceToNow(request.requestDate, {
+                  {isClient ? formatDistanceToNow(request.requestDate, {
                     addSuffix: true,
-                  })}
+                  }) : '...'}
                 </TableCell>
                 <TableCell className="text-right">
                   {request.status === 'pending' ? (

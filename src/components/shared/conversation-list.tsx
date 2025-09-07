@@ -1,9 +1,13 @@
+
+'use client';
+
 import { cn } from '@/lib/utils';
 import type { Conversation } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { Card, CardHeader, CardTitle } from '../ui/card';
+import { CardHeader, CardTitle } from '../ui/card';
 import { ScrollArea } from '../ui/scroll-area';
 import { formatDistanceToNow } from 'date-fns';
+import { useEffect, useState } from 'react';
 
 interface ConversationListProps {
   conversations: Conversation[];
@@ -16,6 +20,12 @@ export function ConversationList({
   selectedConversation,
   onSelectConversation,
 }: ConversationListProps) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
     <aside className="w-1/3 border-r">
        <CardHeader>
@@ -40,7 +50,7 @@ export function ConversationList({
                     <div className="flex items-center justify-between">
                         <p className="font-semibold">{convo.participant.name}</p>
                         <p className="text-xs text-muted-foreground">
-                        {formatDistanceToNow(convo.lastMessageTimestamp, { addSuffix: true })}
+                        {isClient ? formatDistanceToNow(convo.lastMessageTimestamp, { addSuffix: true }) : '...'}
                         </p>
                     </div>
                     <div className="flex items-center justify-between">
