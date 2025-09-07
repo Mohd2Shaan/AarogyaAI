@@ -59,8 +59,10 @@ export default function LoginPage() {
   const router = useRouter();
   const { toast } = useToast();
   const [currentTaglineIndex, setCurrentTaglineIndex] = useState(0);
+  const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
+    setIsClient(true);
     const timer = setInterval(() => {
       setCurrentTaglineIndex((prevIndex) => (prevIndex + 1) % taglines.length);
     }, 4000);
@@ -159,7 +161,7 @@ export default function LoginPage() {
                 <span className="text-4xl font-bold text-foreground">Aarogya Care</span>
             </Link>
             <div className="h-24">
-                {taglines.map((tagline, index) => (
+                {isClient && taglines.map((tagline, index) => (
                     <div
                         key={index}
                         className={cn(
