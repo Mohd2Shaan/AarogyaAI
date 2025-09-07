@@ -12,21 +12,22 @@ import { PatientReportManager } from '@/components/doctor/patient-report-manager
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EditableMedicineSchedule } from '@/components/doctor/editable-medicine-schedule';
 import { PatientFoodLog } from '@/components/doctor/patient-food-log';
+import { AiComplianceAssistant } from '@/components/doctor/ai-compliance-assistant';
 
 export default function PatientProfilePage() {
   const params = useParams();
   const { getPatientById } = usePatientStore();
   const [patient, setPatient] = useState<Patient | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const patientId = params.id as string;
 
   useEffect(() => {
-    const patientId = params.id as string;
     if (patientId) {
       const foundPatient = getPatientById(patientId);
       setPatient(foundPatient);
     }
     setIsLoading(false);
-  }, [params.id, getPatientById]);
+  }, [patientId, getPatientById]);
 
   if (isLoading) {
     return <DoctorDashboardSkeleton />;
@@ -49,8 +50,8 @@ export default function PatientProfilePage() {
   };
 
   return (
-    <div className="container mx-auto">
-      <div className="flex flex-col md:flex-row items-start gap-8 mb-8">
+    <div className="container mx-auto space-y-8">
+      <div className="flex flex-col md:flex-row items-start gap-8">
         <Avatar className="h-32 w-32 border-4 border-primary">
           <AvatarImage src={patient.avatar} alt={patient.name} />
           <AvatarFallback className="text-4xl">
@@ -81,6 +82,8 @@ export default function PatientProfilePage() {
           </div>
         </div>
       </div>
+      
+      <AiComplianceAssistant patientId={patient.id} />
 
       <Tabs defaultValue="schedule" className="w-full">
         <TabsList className="grid w-full grid-cols-3">

@@ -3,6 +3,7 @@
 
 import { analyzeMedicalReport, type AnalyzeMedicalReportOutput } from '@/ai/flows/analyze-medical-report';
 import { checkSymptoms, type CheckSymptomsOutput } from '@/ai/flows/symptom-checker';
+import { analyzePatientCompliance, type AnalyzePatientComplianceOutput } from '@/ai/flows/analyze-patient-compliance';
 import { logAuditEvent } from '@/lib/audit';
 import { revalidatePath } from 'next/cache';
 
@@ -90,6 +91,28 @@ export async function handleCheckSymptoms(
         return { success: true, result, error: null };
     } catch(e) {
         console.error("Symptom checker failed", e);
+        const error = e instanceof Error ? e.message : 'An unexpected error occurred.';
+        return { success: false, result: null, error };
+    }
+}
+
+// AI Compliance Analysis Action
+export interface ComplianceAnalysisState {
+    success: boolean;
+    result: AnalyzePatientComplianceOutput | null;
+    error: string | null;
+}
+
+export async function handleAnalyzeCompliance(patientId: string): Promise<ComplianceAnalysisState> {
+    if (!patientId) {
+        return { success: false, result: null, error: 'Patient ID is missing.' };
+    }
+
+    try {
+        const result = await analyzePatientCompliance({ patientId });
+        return { success: true, result, error: null };
+    } catch (e) {
+        console.error("Compliance analysis failed", e);
         const error = e instanceof Error ? e.message : 'An unexpected error occurred.';
         return { success: false, result: null, error };
     }

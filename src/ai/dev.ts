@@ -1,3 +1,4 @@
+
 import { config } from 'dotenv';
 config();
 
@@ -28,6 +29,14 @@ import('@/ai/flows/chat-with-assistant').then(module => {
       flows.push(module[key]);
     }
   }
+});
+
+import('@/ai/flows/analyze-patient-compliance').then(module => {
+    for (const key in module) {
+        if (module[key] instanceof Flow) {
+        flows.push(module[key]);
+        }
+    }
 });
 
 run({
