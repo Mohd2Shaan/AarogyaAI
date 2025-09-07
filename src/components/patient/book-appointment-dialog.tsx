@@ -77,10 +77,17 @@ export function BookAppointmentDialog({ specialistName }: BookAppointmentDialogP
                 >
                   <CalendarIcon className="mr-2 h-4 w-4" />
                   {date ? format(date, 'PPP') : <span>Pick a date</span>}
+                  <span className="sr-only">Open date picker</span>
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
-                <Calendar mode="single" selected={date} onSelect={setDate} initialFocus />
+                <Calendar
+                  mode="single"
+                  selected={date}
+                  onSelect={setDate}
+                  initialFocus
+                  disabled={(date) => date < new Date()}
+                 />
               </PopoverContent>
             </Popover>
           </div>

@@ -190,6 +190,7 @@ export function AddPatientForm() {
                                 <span>Pick a date</span>
                               )}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                               <span className="sr-only">Open date picker</span>
                             </Button>
                           </FormControl>
                         </PopoverTrigger>
