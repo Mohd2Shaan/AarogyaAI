@@ -1,14 +1,9 @@
+
 'use server';
 
-import { genkit, z } from 'genkit';
-import { googleAI } from '@genkit-ai/googleai';
+import { z } from 'genkit';
+import { ai } from '@/ai/genkit';
 import type { MessageData } from 'genkit';
-
-// Initialize Genkit with Google plugin + default model
-const ai = genkit({
-  plugins: [googleAI()],
-  model: googleAI.model('gemini-2.5-flash'), // default model set here
-});
 
 // Zod schema
 const ChatWithAssistantInputSchema = z.object({
@@ -82,20 +77,17 @@ YOUR INSTRUCTIONS:
 
   try {
     // Generate response using the parts-array format (v1.18.0 compatible)
-    const partsResponse: any = await ai.generate([{ text: combined }]);
+    const response = await ai.generate({
+      prompt: [{ text: combined }],
+    });
 
     // Debug: log the raw AI response
-    console.log('AI response:', partsResponse);
+    console.log('AI response:', response);
 
-    let textRes: string | undefined;
-    if (Array.isArray(partsResponse)) {
-      textRes = partsResponse[0]?.text;
-    } else if (partsResponse && typeof partsResponse.text === 'string') {
-      textRes = partsResponse.text;
-    }
+    let textRes: string | undefined = response.text;
 
     if (!textRes) {
-      console.error('Empty response from ai.generate()', partsResponse);
+      console.error('Empty response from ai.generate()', response);
       return "I'm sorry — I seem to be having trouble generating a response right now.";
     }
 
