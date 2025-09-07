@@ -1,11 +1,16 @@
+
+'use client';
+
 import { useState } from 'react';
-import { Send } from 'lucide-react';
+import { Send, Phone, Video } from 'lucide-react';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { ScrollArea } from '../ui/scroll-area';
 import { cn } from '@/lib/utils';
 import type { ChatMessage } from '@/lib/types';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { CallSimulationDialog } from './call-simulation';
+import { Skeleton } from '../ui/skeleton';
 
 interface ChatWindowProps {
   messages: ChatMessage[];
@@ -21,6 +26,11 @@ export function ChatWindow({
   userType,
 }: ChatWindowProps) {
   const [message, setMessage] = useState('');
+  const [isClient, setIsClient] = useState(false);
+
+  useState(() => {
+    setIsClient(true);
+  });
 
   const handleSend = () => {
     if (message.trim()) {
@@ -39,8 +49,33 @@ export function ChatWindow({
 
   return (
     <div className="flex flex-1 flex-col">
-      <header className="border-b p-4">
+       <header className="flex items-center justify-between border-b p-4">
         <h2 className="text-xl font-bold">{participantName}</h2>
+        {participantName !== 'Select a conversation' && (
+          <div className="flex items-center gap-2">
+            {isClient ? (
+              <>
+                <CallSimulationDialog patientName={participantName} callType="voice">
+                  <Button variant="ghost" size="icon">
+                    <Phone className="h-5 w-5" />
+                    <span className="sr-only">Voice Call</span>
+                  </Button>
+                </CallSimulationDialog>
+                <CallSimulationDialog patientName={participantName} callType="video">
+                  <Button variant="ghost" size="icon">
+                    <Video className="h-5 w-5" />
+                    <span className="sr-only">Video Call</span>
+                  </Button>
+                </CallSimulationDialog>
+              </>
+            ) : (
+                <div className='flex items-center gap-2'>
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                    <Skeleton className="h-10 w-10 rounded-full" />
+                </div>
+            )}
+          </div>
+        )}
       </header>
       <ScrollArea className="flex-1 p-4">
         <div className="space-y-4">
@@ -90,12 +125,14 @@ export function ChatWindow({
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-            className="pr-12"
+            className="pr-12 rounded-full"
+            disabled={participantName === 'Select a conversation'}
           />
           <Button
             size="icon"
-            className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8"
+            className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8 rounded-full"
             onClick={handleSend}
+            disabled={!message.trim()}
           >
             <Send className="h-4 w-4" />
           </Button>
