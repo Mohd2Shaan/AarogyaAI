@@ -67,3 +67,11 @@ export interface Specialist {
   avatar: string;
   status: 'Available' | 'Busy' | 'Offline';
 }
+
+export interface FoodLog {
+    id: string;
+    mealType: 'Breakfast' | 'Lunch' | 'Dinner' | 'Snack';
+    foodItems: string;
+    beforeOrAfterMedication?: string;
+    timestamp: Date;
+}

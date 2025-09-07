@@ -10,6 +10,7 @@ import {
   FileText,
   UserPlus,
   HeartPulse,
+  CookingPot,
 } from 'lucide-react';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,7 @@ const patientNavLinks = [
   { href: '/patient/appointments', label: 'Appointments', icon: Calendar },
   { href: '/patient/records', label: 'My Records', icon: FileText },
   { href: '/patient/symptom-checker', label: 'Symptom Checker', icon: HeartPulse },
+  { href: '/patient/food-log', label: 'Food Log', icon: CookingPot },
   { href: '/patient/connect-specialist', label: 'Connect Specialist', icon: UserPlus },
 ];
 

@@ -11,6 +11,7 @@ import { DoctorDashboardSkeleton } from '@/components/skeletons';
 import { PatientReportManager } from '@/components/doctor/patient-report-manager';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { EditableMedicineSchedule } from '@/components/doctor/editable-medicine-schedule';
+import { PatientFoodLog } from '@/components/doctor/patient-food-log';
 
 export default function PatientProfilePage() {
   const params = useParams();
@@ -82,12 +83,16 @@ export default function PatientProfilePage() {
       </div>
 
       <Tabs defaultValue="schedule" className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="schedule">Medicine Schedule</TabsTrigger>
+          <TabsTrigger value="food">Food Log</TabsTrigger>
           <TabsTrigger value="reports">Clinical Reports</TabsTrigger>
         </TabsList>
         <TabsContent value="schedule">
             <EditableMedicineSchedule />
+        </TabsContent>
+        <TabsContent value="food">
+            <PatientFoodLog patientId={patient.id} />
         </TabsContent>
         <TabsContent value="reports">
             <PatientReportManager patientId={patient.id} />
