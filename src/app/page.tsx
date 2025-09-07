@@ -17,7 +17,7 @@ export default function WelcomePage() {
           </div>
 
           <p className="mb-6 max-w-2xl font-light text-muted-foreground md:text-lg lg:mb-8 lg:text-xl">
-            Smarter care starts here. Track, connect, and heal. Your health, your data, and your doctor—all in one secure place. Experience healthcare reimagined with the power of AI.
+            Your health, your data, your doctor — all in one secure place.
           </p>
           <div className="flex items-center gap-4">
             <Button asChild size="lg">
