@@ -10,7 +10,7 @@ import type { Patient } from '@/lib/types';
 import { DoctorDashboardSkeleton } from '@/components/skeletons';
 import { PatientReportManager } from '@/components/doctor/patient-report-manager';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { MedicineSchedule } from '@/components/doctor/medicine-schedule';
+import { EditableMedicineSchedule } from '@/components/doctor/editable-medicine-schedule';
 
 export default function PatientProfilePage() {
   const params = useParams();
@@ -87,7 +87,7 @@ export default function PatientProfilePage() {
           <TabsTrigger value="reports">Clinical Reports</TabsTrigger>
         </TabsList>
         <TabsContent value="schedule">
-            <MedicineSchedule />
+            <EditableMedicineSchedule />
         </TabsContent>
         <TabsContent value="reports">
             <PatientReportManager patientId={patient.id} />
