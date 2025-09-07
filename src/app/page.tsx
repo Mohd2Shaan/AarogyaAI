@@ -17,9 +17,7 @@ export default function WelcomePage() {
           </div>
 
           <p className="mb-6 max-w-2xl font-light text-muted-foreground md:text-lg lg:mb-8 lg:text-xl">
-            Welcome to the future of healthcare management. Connect with your
-            doctor, track your health, and get AI-powered insights, all in
-            one secure platform.
+            change this line to
           </p>
           <div className="flex items-center gap-4">
             <Button asChild size="lg">
